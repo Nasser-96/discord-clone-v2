@@ -1,0 +1,38 @@
+version: '1.0'
+
+services:
+  discord-api:
+    user: root
+    build: .
+    container_name: discord_clone_v2
+    ports:
+      - '9000:9000' # Your NestJS app port
+    env_file:
+      - .env
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=12345
+      - DATABASE_NAME=discord_clone_v2
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    command: npm run start:dev
+
+  postgres:
+    image: postgres:15.5
+    container_name: discord_clone_v2_db
+    restart: always
+    ports:
+      - '13333:5432' # Map host port 13333 to container's 5432 (Postgres default)
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: discord_clone_v2
+
+volumes:
+  pgdata:
