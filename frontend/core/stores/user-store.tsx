@@ -1,3 +1,4 @@
+import { getAuthToken } from "@/helpers/auth/token";
 import { create } from "zustand";
 
 export type UserStoreType = {
@@ -7,7 +8,7 @@ export type UserStoreType = {
 };
 
 const useUserStore = create<UserStoreType>((set) => ({
-  token: "",
+  token: getAuthToken() || "",
 
   // setUserData(userData: UserStoreDataType) {
   //   set((state) => {

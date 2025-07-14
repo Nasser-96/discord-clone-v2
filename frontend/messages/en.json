@@ -1,0 +1,33 @@
+{
+  "Login": {
+    "login": "Login",
+    "title": "Welcome back!",
+    "identifier": "Username or Email",
+    "identifierPlaceholder": "Enter username or email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "noAccount": "Don't have an account?",
+    "register": "Register now"
+  },
+  "signup": {
+    "title": "Create an Account",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email address",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginNow": "Login now",
+    "register": "Register"
+  },
+  "error": {
+    "invalidEmail": "Invalid email address.",
+    "passwordsMustMatch": "Passwords do not match.",
+    "passwordTooShort": " Password must be at least 5 characters long.",
+    "genericError": "An error occurred. Please try again later.",
+    "required": "This field is required."
+  }
+}

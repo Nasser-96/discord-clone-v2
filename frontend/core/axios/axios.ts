@@ -12,7 +12,7 @@ export type MakeRequest = {
 export const makeRequest = async (req: MakeRequest) => {
   const { url, method, data, params, headers } = req;
   return axiosObject({
-    url: "http://localhost:9000/" + url,
+    url: "http://localhost:9000" + url,
     method,
     data,
     headers,

@@ -1,0 +1,33 @@
+{
+  "Login": {
+    "login": "تسجيل الدخول",
+    "title": "مرحبًا بعودتك!",
+    "identifier": "اسم المستخدم أو البريد الإلكتروني",
+    "identifierPlaceholder": "أدخل اسم المستخدم أو البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "noAccount": "ليس لديك حساب؟",
+    "register": "سجل الآن"
+  },
+  "signup": {
+    "title": "إنشاء حساب",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم الخاص بك",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل عنوان بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور الخاصة بك",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور الخاصة بك",
+    "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
+    "loginNow": "تسجيل الدخول الآن",
+    "register": "تسجيل"
+  },
+  "error": {
+    "invalidEmail": "عنوان البريد الإلكتروني غير صالح.",
+    "passwordsMustMatch": "كلمات المرور غير متطابقة.",
+    "passwordTooShort": "يجب أن تكون كلمة المرور على الأقل 5 أحرف.",
+    "genericError": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا.",
+    "required": "هذا الحقل مطلوب."
+  }
+}

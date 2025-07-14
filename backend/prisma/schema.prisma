@@ -59,7 +59,7 @@ model Message {
   channel Channel @relation(fields: [channelId], references: [id])
 }
 
-// ====================== Enum =====================
+// ====================== Enums =====================
 enum MemberRole {
   ADMIN
   MODERATOR

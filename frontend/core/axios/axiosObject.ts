@@ -1,10 +1,11 @@
-import useUserStore from "@/stores/user-store";
+import useUserStore from "@/core/stores/user-store";
+import { getAuthToken } from "@/helpers/auth/token";
 import axios, { InternalAxiosRequestConfig } from "axios";
 
 const axiosObject = axios.create();
 
 const getToken = () => {
-  const { token } = useUserStore?.getState();
+  const token = getAuthToken();
   return token;
 };
 
