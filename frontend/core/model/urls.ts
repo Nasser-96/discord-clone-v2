@@ -3,4 +3,7 @@ export const urls = {
     login: "/auth/login",
     signup: "/auth/signup",
   },
+  upload: {
+    image: "/upload",
+  },
 };

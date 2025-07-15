@@ -23,16 +23,16 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const isPublicRoute = [`/${locale}/login`, `/${locale}/signup`].includes(
+  const isAuthPages = [`/${locale}/login`, `/${locale}/signup`].includes(
     headerList || ""
   );
 
-  if (!cookieStore && !isPublicRoute) {
+  if (!cookieStore && !isAuthPages) {
     redirect(`${locale}/login`);
   }
 
-  if (cookieStore && isPublicRoute) {
-    redirect(`/`);
+  if (cookieStore && isAuthPages) {
+    redirect(`/${locale}/home`);
   }
 
   return (
@@ -41,7 +41,7 @@ export default async function LocaleLayout({
         <div dir={dir} className="">
           <NextIntlClientProvider>
             <main
-              className={`min-h-screen w-full text-white bg-discord-bg transition-all duration-300 ease-in-out`}
+              className={`h-screen w-full text-white bg-discord-bg transition-all duration-300 ease-in-out`}
             >
               {children}
             </main>

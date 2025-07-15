@@ -23,3 +23,17 @@ export const LoginService = (data: LoginFormType) => {
     data: data,
   });
 };
+
+export const uploadImageService = (file: File) => {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  return makeRequest({
+    url: urls.upload.image,
+    method: AxiosMethods.POST,
+    data: formData,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

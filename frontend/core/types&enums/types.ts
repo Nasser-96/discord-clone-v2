@@ -22,3 +22,12 @@ export type DecodedTokenType = {
   username: string;
   email: string;
 };
+
+export type UploadImageResponseType = {
+  image_url: string;
+};
+
+export type CreateServerFormType = {
+  name: string;
+  image: string;
+};

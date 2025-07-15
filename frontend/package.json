@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "axios": "^1.10.0",
     "formik": "^2.4.6",
     "i18next": "^25.3.2",

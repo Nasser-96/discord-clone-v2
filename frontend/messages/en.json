@@ -29,5 +29,22 @@
     "passwordTooShort": " Password must be at least 5 characters long.",
     "genericError": "An error occurred. Please try again later.",
     "required": "This field is required."
+  },
+  "uploadImage": {
+    "title": "Upload Image"
+  },
+  "home": {
+    "createServer": "Create Server"
+  },
+  "createServerModal": {
+    "title": "Create Server",
+    "name": "Server Name",
+    "namePlaceholder": "Enter server name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter server description",
+    "create": "Create",
+    "cancel": "Cancel",
+    "nameLabel": "Server Name",
+    "subTitle": "Create a new server to start collaborating with your team."
   }
 }

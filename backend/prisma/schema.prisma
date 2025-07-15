@@ -13,6 +13,7 @@ model User {
   username  String   @unique
   email     String   @unique
   password  String
+  image     String?
   createdAt DateTime @default(now())
 
   memberships Member[]
@@ -22,6 +23,7 @@ model User {
 model Server {
   id        String   @id @default(uuid())
   name      String
+  image     String?
   createdAt DateTime @default(now())
 
   channels   Channel[]

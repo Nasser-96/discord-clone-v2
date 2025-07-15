@@ -29,5 +29,22 @@
     "passwordTooShort": "يجب أن تكون كلمة المرور على الأقل 5 أحرف.",
     "genericError": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا.",
     "required": "هذا الحقل مطلوب."
+  },
+  "uploadImage": {
+    "title": "تحميل الصورة"
+  },
+  "home": {
+    "createServer": "إنشاء خادم"
+  },
+  "createServerModal": {
+    "title": "إنشاء خادم",
+    "name": "اسم الخادم",
+    "namePlaceholder": "أدخل اسم الخادم",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصف الخادم",
+    "create": "إنشاء",
+    "cancel": "إلغاء",
+    "nameLabel": "اسم الخادم",
+    "subTitle": "أنشئ خادمًا جديدًا لبدء التعاون مع فريقك."
   }
 }

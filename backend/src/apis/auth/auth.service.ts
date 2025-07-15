@@ -52,7 +52,6 @@ export class AuthService {
         password: true, // Ensure password is selected for comparison
       },
     });
-    console.log('user', user);
 
     const badRequestError = new BadRequestException(
       ReturnResponse({
@@ -62,6 +61,7 @@ export class AuthService {
         },
       }),
     );
+
     if (!user) {
       throw badRequestError;
     }

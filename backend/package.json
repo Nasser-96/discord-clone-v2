@@ -20,7 +20,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "run:migration": "docker exec -it discord_clone_v2 npx prisma migrate dev --name init",
     "run:generate": "docker exec -it discord_clone_v2 npx prisma generate",
-    "install": "docker exec -it discord_clone_v2 npm install",
     "docker:logs": "docker logs -f discord_clone_v2",
     "docker:build": "docker compose -p discord -f ./docker-compose.yml up -V --build -d && npm run run:migration && npm run run:generate && docker logs -f discord_clone_v2"
   },
@@ -41,6 +40,7 @@
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "fastify-multer": "^2.0.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.1"
