@@ -78,6 +78,7 @@
   },
   "confirmMessage": {
     "deleteMemberTitle": "Are you sure you want to kick this member?",
+    "deleteServer": "Are you sure you want to delete this server?",
     "leaveServerTitle": "Are you sure you want to leave this server?",
     "yes": "Yes",
     "delete": "Delete",

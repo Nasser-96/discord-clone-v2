@@ -14,6 +14,7 @@ interface ServerSidebarDropdownProps {
   openSettingModal: () => void;
   openManageModal: () => void;
   openLeaveModal: () => void;
+  openDeleteServerModal: () => void;
 }
 
 export default function ServerSidebarDropdown({
@@ -23,6 +24,7 @@ export default function ServerSidebarDropdown({
   openSettingModal,
   openManageModal,
   openLeaveModal,
+  openDeleteServerModal,
 }: ServerSidebarDropdownProps) {
   const t = useTranslations("ServerSidebarDropdown");
   return (
@@ -76,7 +78,7 @@ export default function ServerSidebarDropdown({
           icon={<FiTrash size={16} />}
           label={t("deleteServer")}
           action={() => {
-            console.log("Delete Server");
+            openDeleteServerModal();
           }}
         />
       )}

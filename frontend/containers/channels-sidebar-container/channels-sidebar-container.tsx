@@ -7,6 +7,7 @@ import ManageMembersModal from "@/components/manage-members-modal/manage-members
 import ServerSidebarDropdown from "@/components/server-sidebar-dropdown/server-sidebar-dropdown";
 import DropDownMenu from "@/components/shared/DropDownMenu";
 import {
+  deleteServerService,
   leaveServerService,
   removeUserFromServerService,
   updateMemberRoleService,
@@ -33,11 +34,14 @@ export default function ChannelsSidebarContainer({
   serverData,
 }: ChannelsSidebarContainerProps) {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
+  const [isDeleteServerModalOpen, setIsDeleteServerModalOpen] =
+    useState<boolean>(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState<boolean>(false);
   const [isManageModalOpen, setIsManageModalOpen] = useState<boolean>(false);
   const [serverDataState, setServerDataState] = useState<
     ServerDataResponseType | undefined
   >(serverData);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
   const { servers, setServers } = serversDataStore();
   const t = useTranslations("common");
@@ -96,6 +100,7 @@ export default function ChannelsSidebarContainer({
   };
 
   const deleteMember = async (memberId: string) => {
+    setIsLoading(true);
     try {
       if (!serverDataState) {
         return;
@@ -110,9 +115,11 @@ export default function ChannelsSidebarContainer({
     } catch (error) {
       console.error("Error deleting member:", error);
     }
+    setIsLoading(false);
   };
 
   const leaveServer = async () => {
+    setIsLoading(true);
     try {
       await leaveServerService(serverId);
       const newServers = servers.filter((server) => server.id !== serverId);
@@ -122,6 +129,21 @@ export default function ChannelsSidebarContainer({
     } catch (error) {
       console.error("Error leaving server:", error);
     }
+    setIsLoading(false);
+  };
+
+  const deleteServer = async () => {
+    setIsLoading(true);
+    try {
+      await deleteServerService(serverId);
+      const newServers = servers.filter((server) => server.id !== serverId);
+      setServers(newServers);
+
+      router.push(`/${locale ?? "en"}/home`);
+    } catch (error) {
+      console.error("Error deleting server:", error);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -141,6 +163,7 @@ export default function ChannelsSidebarContainer({
               setIsManageModalOpen(true);
             }}
             openLeaveModal={() => setIsLeaveModalOpen(true)}
+            openDeleteServerModal={() => setIsDeleteServerModalOpen(true)}
           />
         }
       >
@@ -183,6 +206,7 @@ export default function ChannelsSidebarContainer({
           closeModal={() => {
             setIsManageModalOpen(false);
           }}
+          isLoading={isLoading}
           updateMemberRole={(memberId, newRole) =>
             updateMemberRole(memberId, newRole)
           }
@@ -194,12 +218,27 @@ export default function ChannelsSidebarContainer({
           title={confirmMessage("leaveServerTitle")}
           confirmText={confirmMessage("yes")}
           cancelText={confirmMessage("cancel")}
+          isLoading={isLoading}
           confirmButtonColor={ColorEnum.DANGER}
-          onConfirm={() => {
-            leaveServer();
+          onConfirm={async () => {
+            await leaveServer();
             setIsLeaveModalOpen(false);
           }}
           onCancel={() => setIsLeaveModalOpen(false)}
+        />
+      )}
+      {isDeleteServerModalOpen && (
+        <ConfirmModal
+          title={confirmMessage("deleteServer")}
+          confirmText={confirmMessage("yes")}
+          cancelText={confirmMessage("cancel")}
+          isLoading={isLoading}
+          confirmButtonColor={ColorEnum.DANGER}
+          onConfirm={async () => {
+            await deleteServer();
+            setIsDeleteServerModalOpen(false);
+          }}
+          onCancel={() => setIsDeleteServerModalOpen(false)}
         />
       )}
     </div>

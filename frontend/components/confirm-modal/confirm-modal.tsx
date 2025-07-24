@@ -4,6 +4,7 @@ import Button from "../shared/Button";
 
 interface ConfirmModalProps {
   title: string;
+  isLoading?: boolean;
   confirmText: string;
   cancelText: string;
   confirmButtonColor?: ColorEnum;
@@ -15,6 +16,7 @@ export default function ConfirmModal({
   cancelText,
   confirmText,
   title,
+  isLoading,
   confirmButtonColor = ColorEnum.PRIMARY,
   onCancel,
   onConfirm,
@@ -24,10 +26,18 @@ export default function ConfirmModal({
       <div className="flex flex-col gap-4">
         <h1 className="text-center text-2xl font-bold">{title}</h1>
         <div className="flex items-center justify-center gap-5">
-          <Button onClick={onCancel} color={ColorEnum.DARK}>
+          <Button
+            isLoading={isLoading}
+            onClick={onCancel}
+            color={ColorEnum.DARK}
+          >
             {cancelText}
           </Button>
-          <Button onClick={onConfirm} color={confirmButtonColor}>
+          <Button
+            isLoading={isLoading}
+            onClick={onConfirm}
+            color={confirmButtonColor}
+          >
             {confirmText}
           </Button>
         </div>

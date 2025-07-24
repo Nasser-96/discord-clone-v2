@@ -25,6 +25,9 @@ export class ServerService {
               role: MemberRole.ADMIN,
             },
           },
+          channels: {
+            create: [{ name: 'General', channelType: 'TEXT' }],
+          },
         },
       });
 
@@ -193,6 +196,19 @@ export class ServerService {
     return ReturnResponse({
       is_successful: true,
       response: updatedServer,
+    });
+  }
+
+  async deleteServerService(serverId: string) {
+    const deletedServer = await this.prisma.server.delete({
+      where: {
+        id: serverId,
+      },
+    });
+
+    return ReturnResponse({
+      is_successful: true,
+      response: deletedServer,
     });
   }
 }

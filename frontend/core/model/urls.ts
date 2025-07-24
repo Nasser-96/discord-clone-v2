@@ -10,6 +10,7 @@ export const urls = {
     create: "/server/create",
     myServers: "/server/my-servers",
     update: (serverId: string) => `/server/${serverId}/update`,
+    deleteServer: (serverId: string) => `/server/${serverId}/delete`,
     serverData: (serverId: string) => `/server/${serverId}`,
     updateServerInviteCode: (serverId: string) =>
       `/server/${serverId}/update-invite-code`,

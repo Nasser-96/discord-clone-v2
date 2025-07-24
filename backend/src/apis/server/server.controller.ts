@@ -7,6 +7,7 @@ import {
   UseGuards,
   Req,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { ServerService } from './server.service';
 import { CreateServerDto } from './dto/create-server.dto';
@@ -63,5 +64,11 @@ export class ServerController {
     @Body() updateServerDto: CreateServerDto,
   ) {
     return this.serverService.updateServerService(serverId, updateServerDto);
+  }
+
+  @Delete(':serverId/delete')
+  @UseGuards(AuthGuard, CanUpdateServer)
+  deleteServer(@Param('serverId') serverId: string) {
+    return this.serverService.deleteServerService(serverId);
   }
 }

@@ -23,6 +23,7 @@ import ConfirmModal from "../confirm-modal/confirm-modal";
 interface ManageMembersModalProps {
   members: MemberResponseType[];
   isAdmin: boolean;
+  isLoading?: boolean;
   closeModal: () => void;
   updateMemberRole: (memberId: string, newRole: MemberRoleEnum) => void;
   deleteMember: (memberId: string) => void;
@@ -41,6 +42,7 @@ const roleIcon = {
 export default function ManageMembersModal({
   members,
   isAdmin,
+  isLoading,
   closeModal,
   updateMemberRole,
   deleteMember,
@@ -128,6 +130,7 @@ export default function ManageMembersModal({
           cancelText={confirmMessage("cancel")}
           confirmText={confirmMessage("delete")}
           title={confirmMessage("deleteMemberTitle")}
+          isLoading={isLoading}
           confirmButtonColor={ColorEnum.DANGER}
           onCancel={() => {
             setIsConfirmModalOpen(false);

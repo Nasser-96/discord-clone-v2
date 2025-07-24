@@ -127,3 +127,10 @@ export const leaveServerService = (serverId: string) => {
     method: AxiosMethods.DELETE,
   });
 };
+
+export const deleteServerService = (serverId: string) => {
+  return makeRequest({
+    url: urls.server.deleteServer(serverId),
+    method: AxiosMethods.DELETE,
+  });
+};
