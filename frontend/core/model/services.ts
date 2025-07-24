@@ -1,6 +1,10 @@
 import { makeRequest } from "../axios/axios";
-import { AxiosMethods } from "../types&enums/enums";
-import { LoginFormType, SignUpFormType } from "../types&enums/types";
+import { AxiosMethods, MemberRoleEnum } from "../types&enums/enums";
+import {
+  CreateServerFormType,
+  LoginFormType,
+  SignUpFormType,
+} from "../types&enums/types";
 import { urls } from "./urls";
 
 export const SignupService = (data: SignUpFormType) => {
@@ -35,5 +39,91 @@ export const uploadImageService = (file: File) => {
     headers: {
       "Content-Type": "multipart/form-data",
     },
+  });
+};
+
+export const createServerService = (data: CreateServerFormType) => {
+  return makeRequest({
+    url: urls.server.create,
+    method: AxiosMethods.POST,
+    data: data,
+  });
+};
+
+export const updateServerService = (
+  data: CreateServerFormType,
+  serverId: string
+) => {
+  return makeRequest({
+    url: urls.server.update(serverId),
+    method: AxiosMethods.PUT,
+    data: data,
+  });
+};
+
+export const getMyServersService = (isServer: boolean) => {
+  return makeRequest({
+    isServer: isServer,
+    url: urls.server.myServers,
+    method: AxiosMethods.GET,
+  });
+};
+
+export const getServerDataService = (isServer: boolean, serverId: string) => {
+  return makeRequest({
+    isServer: isServer,
+    url: urls.server.serverData(serverId),
+    method: AxiosMethods.GET,
+  });
+};
+
+export const updateServerInviteCodeService = (
+  isServer: boolean,
+  serverId: string
+) => {
+  return makeRequest({
+    isServer: isServer,
+    url: urls.server.updateServerInviteCode(serverId),
+    method: AxiosMethods.PUT,
+  });
+};
+
+export const addUserToServerService = (
+  isServer: boolean,
+  inviteCode: string
+) => {
+  return makeRequest({
+    isServer: isServer,
+    url: urls.server.addUser(inviteCode),
+    method: AxiosMethods.POST,
+  });
+};
+
+export const updateMemberRoleService = (
+  serverId: string,
+  memberId: string,
+  newRole: MemberRoleEnum
+) => {
+  return makeRequest({
+    url: urls.member.updateMemberRole(serverId, memberId),
+    method: AxiosMethods.PUT,
+    data: { role: newRole },
+  });
+};
+
+export const removeUserFromServerService = (
+  serverId: string,
+  memberId: string
+) => {
+  return makeRequest({
+    url: urls.member.removeMember(serverId, memberId),
+    method: AxiosMethods.DELETE,
+  });
+};
+
+export const leaveServerService = (serverId: string) => {
+  return makeRequest({
+    url: urls.member.leaveServer(serverId),
+    method: AxiosMethods.DELETE,
   });
 };

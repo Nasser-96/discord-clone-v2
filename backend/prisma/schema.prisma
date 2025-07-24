@@ -21,32 +21,34 @@ model User {
 }
 
 model Server {
-  id        String   @id @default(uuid())
-  name      String
-  image     String?
-  createdAt DateTime @default(now())
+  id          String    @id @default(uuid())
+  name        String
+  image       String
+  inviteCode  String    @unique @default(uuid())
+  createdAt   DateTime  @default(now())
 
-  channels   Channel[]
-  members    Member[]
+  channels    Channel[]
+  members     Member[]
 }
 
 model Member {
-  id       String   @id @default(uuid())
+  id       String     @id @default(uuid())
   userId   String
   serverId String
   role     MemberRole @default(USER)
 
   user   User   @relation(fields: [userId], references: [id])
-  server Server @relation(fields: [serverId], references: [id])
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 }
 
 model Channel {
-  id        String   @id @default(uuid())
-  name      String
-  serverId  String
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  name        String
+  serverId    String
+  createdAt   DateTime @default(now())
+  channelType ChannelType @default(TEXT) // TEXT or VOICE
 
-  server   Server  @relation(fields: [serverId], references: [id])
+  server   Server  @relation(fields: [serverId], references: [id], onDelete: Cascade)
   messages Message[]
 }
 
@@ -66,4 +68,9 @@ enum MemberRole {
   ADMIN
   MODERATOR
   USER
+}
+
+enum ChannelType {
+  TEXT
+  VOICE
 }

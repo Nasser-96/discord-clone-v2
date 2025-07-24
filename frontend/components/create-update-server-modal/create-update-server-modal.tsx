@@ -7,34 +7,76 @@ import InputField from "../shared/InputField";
 import { ColorEnum } from "@/core/types&enums/enums";
 import { useTranslations } from "next-intl";
 import { useFormik } from "formik";
-import { CreateServerFormType } from "@/core/types&enums/types";
-import { createServerValidation } from "./create-server-modal.validation";
+import {
+  CreateServerFormType,
+  CreateServerResponseType,
+  ReturnResponseType,
+} from "@/core/types&enums/types";
+import { createServerValidation } from "./create-update-server-modal.validation";
 import { useState } from "react";
+import {
+  createServerService,
+  updateServerService,
+} from "@/core/model/services";
 
 interface CreateServerModalProps {
-  closeModal: () => void;
+  serverData?: CreateServerResponseType;
+  closeModal: (createdServer?: CreateServerResponseType) => void;
 }
 
-export default function CreateServerModal({
+export default function CreateUpdateServerModal({
+  serverData,
   closeModal,
 }: CreateServerModalProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const t = useTranslations("createServerModal");
+  const t = useTranslations("createUpdateServerModal");
   const errorTranslation = useTranslations("error");
   const { validation } = createServerValidation(errorTranslation);
   const formik = useFormik<CreateServerFormType>({
     initialValues: {
-      image: "",
-      name: "",
+      image: serverData?.image ?? "",
+      name: serverData?.name ?? "",
     },
     validationSchema: validation,
     onSubmit: (values) => {
-      handleSubmit(values);
+      if (serverData?.id) {
+        updateServer(values);
+      } else {
+        handleSubmit(values);
+      }
     },
   });
 
-  const handleSubmit = (values: CreateServerFormType) => {
-    console.log(values);
+  const updateServer = async (values: CreateServerFormType) => {
+    if (!serverData) {
+      return;
+    }
+
+    const data: CreateServerFormType = {
+      image: values.image,
+      name: values.name,
+    };
+
+    setIsLoading(true);
+    try {
+      const updatedServer: ReturnResponseType<CreateServerResponseType> =
+        await updateServerService(data, serverData?.id);
+      closeModal(updatedServer?.response);
+    } catch (error) {}
+    setIsLoading(false);
+  };
+
+  const handleSubmit = async (values: CreateServerFormType) => {
+    setIsLoading(true);
+    try {
+      const createdServer: ReturnResponseType<CreateServerResponseType> =
+        await createServerService(values);
+
+      closeModal(createdServer?.response);
+    } catch (error) {
+      console.error("Error creating server:", error);
+    }
+    setIsLoading(false);
   };
 
   const handleImageChange = (image_url: string) => {
@@ -52,7 +94,7 @@ export default function CreateServerModal({
           <h1 className="font-bold w-full text-2xl text-center">
             {t("title")}
           </h1>
-          <Button onClick={closeModal} className="border-none">
+          <Button onClick={() => closeModal()} className="border-none">
             <IoClose size={25} />
           </Button>
         </div>
@@ -72,6 +114,7 @@ export default function CreateServerModal({
             aria-label={t("nameLabel")}
             placeholder={t("namePlaceholder")}
             type="text"
+            className="!w-full"
             error={
               formik.touched.name && formik.errors.name
                 ? formik.errors.name
@@ -86,7 +129,7 @@ export default function CreateServerModal({
             type="submit"
             className="self-end mt-3 w-full lg:w-fit"
           >
-            {t("create")}
+            {t(serverData?.id ? "updateServer" : "create")}
           </Button>
         </form>
       </div>

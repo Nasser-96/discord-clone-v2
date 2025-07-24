@@ -36,7 +36,7 @@
   "home": {
     "createServer": "Create Server"
   },
-  "createServerModal": {
+  "createUpdateServerModal": {
     "title": "Create Server",
     "name": "Server Name",
     "namePlaceholder": "Enter server name",
@@ -45,6 +45,42 @@
     "create": "Create",
     "cancel": "Cancel",
     "nameLabel": "Server Name",
+    "updateServer": "Update Server",
     "subTitle": "Create a new server to start collaborating with your team."
+  },
+  "ServerSidebarDropdown": {
+    "invite": "Invite User",
+    "serverSettings": "Server Settings",
+    "manageMembers": "Manage Members",
+    "createChannel": "Create Channel",
+    "deleteServer": "Delete Server",
+    "leaveServer": "Leave Server"
+  },
+  "common": {
+    "noDataYet": "No data yet"
+  },
+  "inviteUserModal": {
+    "title": "Invite User",
+    "linkLabel": "Server Invite Link",
+    "generateNewLink": "Generate New Link"
+  },
+  "serverSettingModal": {
+    "title": "Server Settings"
+  },
+  "manageMembersModal": {
+    "title": "Manage Members",
+    "members": "Members"
+  },
+  "manageMemberDropdown": {
+    "user": "User",
+    "moderator": "Moderator",
+    "kick": "Kick"
+  },
+  "confirmMessage": {
+    "deleteMemberTitle": "Are you sure you want to kick this member?",
+    "leaveServerTitle": "Are you sure you want to leave this server?",
+    "yes": "Yes",
+    "delete": "Delete",
+    "cancel": "Cancel"
   }
 }

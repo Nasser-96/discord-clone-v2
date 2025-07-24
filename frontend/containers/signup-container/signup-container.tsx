@@ -1,7 +1,8 @@
 "use client";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import InputField from "@/components/shared/InputField";
+import { useRouter } from "next/navigation";
 import Button from "@/components/shared/Button";
 import Link from "next/link";
 import AuthUiContainer from "../auth-ui-container/auth-ui-container";
@@ -10,11 +11,15 @@ import { ValidationSchema } from "./signup-container.validation";
 import { ReturnResponseType, SignUpFormType } from "@/core/types&enums/types";
 import { SignupService } from "@/core/model/services";
 import { setAuthToken } from "@/helpers/auth/token";
+import { redirect } from "next/navigation";
+import { ColorEnum } from "@/core/types&enums/enums";
 
 export default function SignupContainer() {
   const t = useTranslations("signup");
   const errorTranslation = useTranslations("error");
   const { validation } = ValidationSchema(errorTranslation);
+  const local = useLocale();
+  const router = useRouter();
 
   const formik = useFormik<SignUpFormType>({
     initialValues: {
@@ -32,6 +37,7 @@ export default function SignupContainer() {
         if (signupData.is_successful) {
           setAuthToken(signupData.response.token);
         }
+        router.push(`/${local}/home`);
       } catch (error) {
         console.log(error);
       }
@@ -98,7 +104,11 @@ export default function SignupContainer() {
                 : ""
             }
           />
-          <Button type="submit" className="bg-discord-primary w-full">
+          <Button
+            color={ColorEnum.PRIMARY}
+            type="submit"
+            className="bg-discord-primary w-full"
+          >
             {t("register")}
           </Button>
           <div className="text-center text-sm text-gray-400">

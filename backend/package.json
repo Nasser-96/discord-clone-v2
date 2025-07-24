@@ -19,6 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "run:migration": "docker exec -it discord_clone_v2 npx prisma migrate dev --name init",
+    "run:migration:name": "docker exec -it discord_clone_v2 npx prisma migrate dev --name",
     "run:generate": "docker exec -it discord_clone_v2 npx prisma generate",
     "docker:logs": "docker logs -f discord_clone_v2",
     "docker:build": "docker compose -p discord -f ./docker-compose.yml up -V --build -d && npm run run:migration && npm run run:generate && docker logs -f discord_clone_v2"
@@ -43,7 +44,8 @@
     "fastify-multer": "^2.0.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

@@ -19,6 +19,7 @@ const swaggerDocument = new DocumentBuilder()
 export async function SetUpProject(app: NestFastifyApplication) {
   app.enableCors({
     origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   });
 
   app.useGlobalPipes(

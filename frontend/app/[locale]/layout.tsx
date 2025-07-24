@@ -4,6 +4,7 @@ import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { ReactNode } from "react";
 import "../globals.css";
+import { handleAuthRedirect } from "@/helpers/auth/redirect";
 
 export default async function LocaleLayout({
   children,
@@ -12,31 +13,11 @@ export default async function LocaleLayout({
   children: ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const cookieStore = (await cookies()).get("token");
-  const headerList = (await headers()).get("x-current-path");
-
-  const { locale } = await params;
-  const dir = locale === "ar" ? "rtl" : "ltr";
-
-  // Ensure the locale is valid
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
-
-  const isAuthPages = [`/${locale}/login`, `/${locale}/signup`].includes(
-    headerList || ""
-  );
-
-  if (!cookieStore && !isAuthPages) {
-    redirect(`${locale}/login`);
-  }
-
-  if (cookieStore && isAuthPages) {
-    redirect(`/${locale}/home`);
-  }
+  const newParams = await params;
+  const { dir } = await handleAuthRedirect(newParams);
 
   return (
-    <html suppressHydrationWarning>
+    <html>
       <body>
         <div dir={dir} className="">
           <NextIntlClientProvider>

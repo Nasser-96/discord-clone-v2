@@ -1,3 +1,5 @@
+import { MemberRoleEnum } from "./enums";
+
 export type ReturnResponseType<T> = {
   is_successful: boolean;
   error_msg: string;
@@ -30,4 +32,50 @@ export type UploadImageResponseType = {
 export type CreateServerFormType = {
   name: string;
   image: string;
+};
+
+export type CreateServerResponseType = {
+  id: string;
+  name: string;
+  image: string;
+  createdAt: Date;
+};
+
+export type ServersResponseType = {
+  createdAt: Date;
+  id: string;
+  image: string;
+  memberCount: number;
+  name: string;
+};
+
+export type ServerDataResponseType = {
+  channels: any[];
+  createdAt: Date;
+  members: MemberResponseType[];
+  id: string;
+  inviteCode: string;
+  image: string;
+  memberRole: MemberRoleEnum;
+  name: string;
+};
+
+export type MemberResponseType = {
+  role: MemberRoleEnum;
+  id: string;
+  user: UserType;
+};
+
+export type UserType = {
+  id: string;
+  image: string;
+  username: string;
+  email: string;
+};
+
+export type UpdateMemberRoleReturnType = {
+  id: string;
+  userId: string;
+  serverId: string;
+  role: MemberRoleEnum;
 };

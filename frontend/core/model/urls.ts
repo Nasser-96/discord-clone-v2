@@ -6,4 +6,20 @@ export const urls = {
   upload: {
     image: "/upload",
   },
+  server: {
+    create: "/server/create",
+    myServers: "/server/my-servers",
+    update: (serverId: string) => `/server/${serverId}/update`,
+    serverData: (serverId: string) => `/server/${serverId}`,
+    updateServerInviteCode: (serverId: string) =>
+      `/server/${serverId}/update-invite-code`,
+    addUser: (inviteCode: string) => `/server/${inviteCode}/add-user`,
+  },
+  member: {
+    updateMemberRole: (serverId: string, memberId: string) =>
+      `/member/update-role/${serverId}/${memberId}`,
+    removeMember: (serverId: string, memberId: string) =>
+      `/member/delete/${serverId}/${memberId}`,
+    leaveServer: (serverId: string) => `/member/leave/${serverId}`,
+  },
 };

@@ -5,8 +5,6 @@ import ReturnResponse from 'src/helper/returnResponse';
 @Injectable()
 export class UploadService {
   uploadFile(req: Request, file: Express.Multer.File) {
-    console.log();
-
     if (!file?.filename) {
       throw new BadRequestException(
         ReturnResponse({

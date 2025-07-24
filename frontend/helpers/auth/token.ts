@@ -1,5 +1,3 @@
-"use client";
-
 import { setCookie, destroyCookie, parseCookies } from "nookies";
 
 const TOKEN_KEY = "token";
@@ -15,10 +13,12 @@ export const setAuthToken = (token: string) => {
 };
 
 export const removeAuthToken = () => {
-  destroyCookie(null, TOKEN_KEY);
+  destroyCookie(null, TOKEN_KEY, {
+    path: "/",
+  });
 };
 
-export const getAuthToken = () => {
-  const cookies = parseCookies();
-  return cookies[TOKEN_KEY];
+export const getAuthToken = async () => {
+  const cookieClient = parseCookies();
+  return cookieClient["token"];
 };

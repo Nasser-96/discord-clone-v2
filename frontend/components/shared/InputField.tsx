@@ -6,7 +6,7 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function InputField({ error, ...props }: InputFieldProps) {
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex flex-col gap-0 w-full">
       {props?.["aria-label"] && (
         <label
           className="block text-sm text-discord-muted mb-1"

@@ -29,3 +29,9 @@ export enum ModalSizeEnum {
   MEDIUM = "MEDIUM",
   SMALL = "SMALL",
 }
+
+export enum MemberRoleEnum {
+  ADMIN = "ADMIN",
+  MODERATOR = "MODERATOR",
+  USER = "USER",
+}

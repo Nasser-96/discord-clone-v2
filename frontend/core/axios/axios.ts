@@ -1,7 +1,8 @@
 import { AxiosMethods } from "../types&enums/enums";
-import axiosObject from "./axiosObject";
+import axiosInstance from "./axiosObject";
 
 export type MakeRequest = {
+  isServer?: boolean; // Optional, default is false
   url: string;
   method: AxiosMethods;
   data?: any;
@@ -10,8 +11,8 @@ export type MakeRequest = {
 };
 
 export const makeRequest = async (req: MakeRequest) => {
-  const { url, method, data, params, headers } = req;
-  return axiosObject({
+  const { url, method, data, params, headers, isServer = false } = req;
+  return axiosInstance(isServer)({
     url: "http://localhost:9000" + url,
     method,
     data,
