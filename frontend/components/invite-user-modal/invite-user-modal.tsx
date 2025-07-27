@@ -54,13 +54,15 @@ export default function InviteUserModal({
   return (
     <Modal>
       <div className="flex flex-col gap-2">
+        <div className="flex items-center w-full justify-end">
+          <Button onClick={() => closeModal()} className="border-none">
+            <IoClose size={25} />
+          </Button>
+        </div>
         <div className="flex items-center">
           <h1 className="font-bold w-full text-2xl text-center">
             {t("title")}
           </h1>
-          <Button onClick={() => closeModal()} className="border-none">
-            <IoClose size={25} />
-          </Button>
         </div>
         <p className=" text-lg">{t("linkLabel")}</p>
         <div className="flex items-center h-full gap-x-2">

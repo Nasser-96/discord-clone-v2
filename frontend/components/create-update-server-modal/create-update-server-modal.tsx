@@ -90,13 +90,15 @@ export default function CreateUpdateServerModal({
   return (
     <Modal>
       <div className="flex flex-col gap-2">
-        <div className="flex items-center">
-          <h1 className="font-bold w-full text-2xl text-center">
-            {t("title")}
-          </h1>
+        <div className="flex items-center w-full justify-end">
           <Button onClick={() => closeModal()} className="border-none">
             <IoClose size={25} />
           </Button>
+        </div>
+        <div className="flex items-center">
+          <h1 className="font-bold w-full text-2xl text-center">
+            {t(serverData?.id ? "updateServer" : "title")}
+          </h1>
         </div>
         <h2 className="text-lg text-center mt-3 opacity-55">{t("subTitle")}</h2>
         <form

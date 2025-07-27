@@ -2,6 +2,7 @@ import { InputHTMLAttributes } from "react";
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 export default function InputField({ error, ...props }: InputFieldProps) {

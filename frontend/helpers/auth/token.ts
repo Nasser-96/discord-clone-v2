@@ -18,7 +18,7 @@ export const removeAuthToken = () => {
   });
 };
 
-export const getAuthToken = async () => {
+export const getAuthToken = () => {
   const cookieClient = parseCookies();
   return cookieClient["token"];
 };

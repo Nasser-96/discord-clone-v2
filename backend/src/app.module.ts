@@ -6,9 +6,10 @@ import { AuthModule } from './apis/auth/auth.module';
 import { UploadModule } from './apis/upload/upload.module';
 import { ServerModule } from './apis/server/server.module';
 import { MemberModule } from './apis/member/member.module';
+import { ChannelsModule } from './apis/channels/channels.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UploadModule, ServerModule, MemberModule],
+  imports: [PrismaModule, AuthModule, UploadModule, ServerModule, MemberModule, ChannelsModule],
   controllers: [AppController],
   providers: [AppService],
 })

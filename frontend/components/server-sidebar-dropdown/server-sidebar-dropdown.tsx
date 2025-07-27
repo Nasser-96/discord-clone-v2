@@ -14,6 +14,7 @@ interface ServerSidebarDropdownProps {
   openSettingModal: () => void;
   openManageModal: () => void;
   openLeaveModal: () => void;
+  openCreateChannelModal: () => void;
   openDeleteServerModal: () => void;
 }
 
@@ -24,6 +25,7 @@ export default function ServerSidebarDropdown({
   openSettingModal,
   openManageModal,
   openLeaveModal,
+  openCreateChannelModal,
   openDeleteServerModal,
 }: ServerSidebarDropdownProps) {
   const t = useTranslations("ServerSidebarDropdown");
@@ -65,7 +67,7 @@ export default function ServerSidebarDropdown({
           icon={<IoIosAddCircleOutline size={16} />}
           label={t("createChannel")}
           action={() => {
-            console.log("Create Channel");
+            openCreateChannelModal();
           }}
         />
       )}

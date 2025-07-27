@@ -20,9 +20,12 @@ export default async function ServerLayout({
       .then((res) => res)
       .catch((error) => {
         console.error("Error fetching serverData:", error);
-        redirect(`/${locale ?? "en"}/home`);
         return undefined;
       });
+
+  if (!serverData || !serverData.response) {
+    redirect(`/${locale ?? "en"}/home`);
+  }
 
   return (
     <div className="flex h-full w-full">

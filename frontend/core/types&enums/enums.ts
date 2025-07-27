@@ -35,3 +35,9 @@ export enum MemberRoleEnum {
   MODERATOR = "MODERATOR",
   USER = "USER",
 }
+
+export enum ChannelTypeEnum {
+  TEXT = "TEXT",
+  AUDIO = "AUDIO",
+  VIDEO = "VIDEO",
+}

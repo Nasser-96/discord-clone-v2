@@ -7,6 +7,7 @@ interface DropDownMenuButtonItemProps {
   disabled?: boolean;
   startIcon?: JSX.Element | null;
   icon?: JSX.Element | null;
+  isGray?: boolean;
   action?: () => void;
 }
 
@@ -16,11 +17,14 @@ export default function DropDownMenuButtonItem({
   label,
   icon,
   startIcon,
+  isGray,
   action,
 }: DropDownMenuButtonItemProps) {
   return (
     <button
-      className={`flex w-full items-center justify-between gap-2 p-2 text-sm bg-gray-950 ${getTransitionClass} hover:!bg-opacity-50 ${
+      className={`flex w-full items-center justify-between gap-2 p-2 text-sm ${
+        isGray ? "bg-[#1e1f22]" : "bg-gray-950"
+      } ${getTransitionClass} hover:!bg-opacity-50 ${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
       } ${className}`}
       type="button"

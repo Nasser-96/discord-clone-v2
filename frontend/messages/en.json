@@ -28,7 +28,9 @@
     "passwordsMustMatch": "Passwords do not match.",
     "passwordTooShort": " Password must be at least 5 characters long.",
     "genericError": "An error occurred. Please try again later.",
-    "required": "This field is required."
+    "required": "This field is required.",
+    "notGeneral": "Channel name can't be 'general'.",
+    "channelTypeError": "Channel type should be one of: TEXT, AUDIO, VIDEO."
   },
   "uploadImage": {
     "title": "Upload Image"
@@ -57,7 +59,8 @@
     "leaveServer": "Leave Server"
   },
   "common": {
-    "noDataYet": "No data yet"
+    "noDataYet": "No data yet",
+    "search": "Search"
   },
   "inviteUserModal": {
     "title": "Invite User",
@@ -83,5 +86,25 @@
     "yes": "Yes",
     "delete": "Delete",
     "cancel": "Cancel"
+  },
+  "createChannelModal": {
+    "title": "Create Channel",
+    "name": "Channel Name",
+    "namePlaceholder": "Enter channel name",
+    "channelType": "Channel Type",
+    "channelTypePlaceholder": "Select channel type",
+    "create": "Create",
+    "cancel": "Cancel",
+    "nameLabel": "Channel Name",
+    "TEXT": "Text",
+    "AUDIO": "Audio",
+    "VIDEO": "Video"
+  },
+  "searchChannelModal": {
+    "text": "Text Channels",
+    "audio": "Audio Channels",
+    "video": "Video Channels",
+    "members": "Members",
+    "searchPlaceholder": "Search channels"
   }
 }

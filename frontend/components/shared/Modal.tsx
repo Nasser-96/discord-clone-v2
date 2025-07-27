@@ -8,12 +8,14 @@ interface ModalProps {
   children: JSX.Element;
   size?: ModalSizeEnum;
   extraClasses?: string;
+  isPaddingDisabled?: boolean;
 }
 
 export default function Modal({
   children,
   extraClasses = "",
   size,
+  isPaddingDisabled = false,
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const randomNumber = Math.random();
@@ -60,7 +62,9 @@ export default function Modal({
         <div
           className={`max-h-800 ${
             isModalAnimationDone ? "scale-100" : "scale-0"
-          } relative bottom-0 mx-auto mt-10 w-11/12 max-w-lg rounded-2xl p-5 shadow-lg transition-all duration-500 sm:p-8 ${getModalSizeClass()} bg-[#2B2D31] ${extraClasses}`}
+          } relative bottom-0 mx-auto mt-10 w-11/12 max-w-lg rounded-2xl ${
+            isPaddingDisabled ? "p-0" : "p-5 sm:p-8"
+          } shadow-lg transition-all duration-500 ${getModalSizeClass()} bg-[#2B2D31] ${extraClasses}`}
         >
           {children}
         </div>

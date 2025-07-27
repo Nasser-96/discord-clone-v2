@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CreateServerDto } from './dto/create-server.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserDataType } from '../auth/types';
-import { MemberRole } from '@prisma/client';
+import { ChannelType, MemberRole } from '@prisma/client';
 import ReturnResponse from 'src/helper/returnResponse';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class ServerService {
             },
           },
           channels: {
-            create: [{ name: 'General', channelType: 'TEXT' }],
+            create: [{ name: 'General', channelType: ChannelType.TEXT }],
           },
         },
       });
@@ -88,7 +88,14 @@ export class ServerService {
         id: serverId,
       },
       include: {
-        channels: true,
+        channels: {
+          select: {
+            channelType: true,
+            id: true,
+            name: true,
+            createdAt: true,
+          },
+        },
         members: {
           orderBy: {
             role: 'asc',

@@ -56,13 +56,15 @@ export default function ManageMembersModal({
     <>
       <Modal>
         <div className="flex flex-col gap-2">
+          <div className="flex items-center w-full justify-end">
+            <Button onClick={() => closeModal()} className="border-none">
+              <IoClose size={25} />
+            </Button>
+          </div>
           <div className="flex items-center">
             <h1 className="font-bold w-full text-2xl text-center">
               {t("title")}
             </h1>
-            <Button onClick={() => closeModal()}>
-              <IoClose size={25} />
-            </Button>
           </div>
           <h1 className="text-center text-discord-muted">
             {members?.length + " " + t("members")}

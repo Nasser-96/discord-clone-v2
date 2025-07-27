@@ -1,15 +1,9 @@
 import {
-  BadGatewayException,
-  BadRequestException,
   CanActivate,
   ConflictException,
   ExecutionContext,
-  HttpException,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
 import ReturnResponse from 'src/helper/returnResponse';
 import { PrismaService } from 'src/prisma/prisma.service';
 

@@ -23,4 +23,7 @@ export const urls = {
       `/member/delete/${serverId}/${memberId}`,
     leaveServer: (serverId: string) => `/member/leave/${serverId}`,
   },
+  channel: {
+    createChannel: (serverId: string) => `/channels/create/${serverId}`,
+  },
 };

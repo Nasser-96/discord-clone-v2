@@ -1,4 +1,4 @@
-import { MemberRoleEnum } from "./enums";
+import { ChannelTypeEnum, MemberRoleEnum } from "./enums";
 
 export type ReturnResponseType<T> = {
   is_successful: boolean;
@@ -50,7 +50,7 @@ export type ServersResponseType = {
 };
 
 export type ServerDataResponseType = {
-  channels: any[];
+  channels: ChannelType[];
   createdAt: Date;
   members: MemberResponseType[];
   id: string;
@@ -78,4 +78,21 @@ export type UpdateMemberRoleReturnType = {
   userId: string;
   serverId: string;
   role: MemberRoleEnum;
+};
+
+export type ChannelType = {
+  channelType: ChannelTypeEnum;
+  createdAt: Date;
+  id: string;
+  name: string;
+};
+
+export type SelectFormatType = {
+  label: string;
+  value: string;
+};
+
+export type CreateChannelRequestType = {
+  name: string;
+  channelType: ChannelTypeEnum;
 };

@@ -30,7 +30,7 @@ export default function Button({ color, isLoading, ...props }: ButtonProps) {
   return (
     <button
       {...props}
-      className={`px-4 py-2 ${getColorBackground()} text-white rounded-lg disabled:cursor-not-allowed focus:outline-none focus:ring-2 relative focus:ring-blue-400 ${
+      className={`px-4 py-2 ${getColorBackground()} disabled:bg-opacity-60 text-white rounded-lg disabled:cursor-not-allowed focus:outline-none focus:ring-2 relative focus:ring-blue-400 ${
         props.className
       } ${getTransitionClass}`}
     >

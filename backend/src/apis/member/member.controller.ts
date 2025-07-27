@@ -34,7 +34,6 @@ export class MemberController {
   @UseGuards(AuthGuard)
   async leaveServer(
     @Param('serverId') serverId: string,
-    @Param('memberId') memberId: string,
     @Req() req: any, // Assuming req contains user data
   ) {
     // Assuming req.user contains the user data

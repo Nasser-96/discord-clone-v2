@@ -1,6 +1,7 @@
 import { makeRequest } from "../axios/axios";
 import { AxiosMethods, MemberRoleEnum } from "../types&enums/enums";
 import {
+  CreateChannelRequestType,
   CreateServerFormType,
   LoginFormType,
   SignUpFormType,
@@ -132,5 +133,16 @@ export const deleteServerService = (serverId: string) => {
   return makeRequest({
     url: urls.server.deleteServer(serverId),
     method: AxiosMethods.DELETE,
+  });
+};
+
+export const createChannelService = (
+  data: CreateChannelRequestType,
+  serverId: string
+) => {
+  return makeRequest({
+    url: urls.channel.createChannel(serverId),
+    method: AxiosMethods.POST,
+    data: data,
   });
 };

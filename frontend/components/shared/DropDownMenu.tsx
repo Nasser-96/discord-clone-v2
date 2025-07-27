@@ -35,7 +35,7 @@ export default function DropDownMenu({
       </button>
       <div className="flex justify-center w-full mt-0 relative">
         <div
-          className={`absolute top-1 bg-discord-bg min-h-12 w-fit overflow-hidden rounded-md shadow drop-shadow ${getTransitionClass} w-[calc(100%-20px)]
+          className={`absolute z-50 top-1 bg-discord-bg min-h-12 w-fit overflow-hidden rounded-md shadow drop-shadow ${getTransitionClass} w-[calc(100%-20px)]
         ${isOpen ? "scale-100" : "scale-0"}
           `}
           onClick={(e) => {
