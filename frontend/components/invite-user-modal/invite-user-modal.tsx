@@ -7,7 +7,7 @@ import { FaCheck } from "@react-icons/all-files/fa/FaCheck";
 import { FiCopy } from "@react-icons/all-files/fi/FiCopy";
 
 import { useState } from "react";
-import { getTransitionClass } from "@/helpers";
+import { getTransitionClass } from "@/core/helpers";
 import InputField from "../shared/InputField";
 import { ColorEnum } from "@/core/types&enums/enums";
 import { updateServerInviteCodeService } from "@/core/model/services";

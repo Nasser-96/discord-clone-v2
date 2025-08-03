@@ -6,21 +6,28 @@ import InputField from "../shared/InputField";
 import Select from "../shared/Select";
 import { ChannelTypeEnum, ColorEnum } from "@/core/types&enums/enums";
 import { useFormik } from "formik";
-import { CreateChannelRequestType } from "@/core/types&enums/types";
-import { createChannelValidation } from "./create-channel-modal.validation";
+import {
+  ChannelType,
+  CreateChannelRequestType,
+} from "@/core/types&enums/types";
+import { createChannelValidation } from "./create-update-channel-modal.validation";
 
 interface CreateChannelModalProps {
   isLoading: boolean;
+  channelData?: ChannelType;
   closeModal: () => void;
   createChannel: (data: CreateChannelRequestType) => void;
+  updateChannel?: (data: CreateChannelRequestType) => void;
 }
 
-export default function CreateChannelModal({
+export default function CreateUpdateChannelModal({
   isLoading,
+  channelData,
   closeModal,
   createChannel,
+  updateChannel,
 }: CreateChannelModalProps) {
-  const t = useTranslations("createChannelModal");
+  const t = useTranslations("createUpdateChannelModal");
   const error = useTranslations("error");
   const { validation } = createChannelValidation(error);
   const selectValues = [
@@ -28,21 +35,32 @@ export default function CreateChannelModal({
     { value: ChannelTypeEnum.AUDIO, label: t(ChannelTypeEnum.AUDIO) },
     { value: ChannelTypeEnum.VIDEO, label: t(ChannelTypeEnum.VIDEO) },
   ];
+  const isEditing = !!channelData?.id;
 
   const formik = useFormik<CreateChannelRequestType>({
     initialValues: {
-      channelType: ChannelTypeEnum.TEXT,
-      name: "",
+      channelType: isEditing ? channelData?.channelType : ChannelTypeEnum.TEXT,
+      name: isEditing ? channelData?.name : "",
     },
     validationSchema: validation,
     onSubmit: (values) => {
-      createChannel(values);
+      if (isEditing) {
+        if (!updateChannel) {
+          console.error("Update channel function is not provided.");
+          return;
+        }
+        updateChannel(values);
+        return;
+      } else {
+        createChannel(values);
+      }
     },
   });
 
   const handleSelectClick = (value: string) => {
     formik.setFieldValue("channelType", value);
   };
+
   return (
     <Modal>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
@@ -78,6 +96,7 @@ export default function CreateChannelModal({
             placeholder={t("channelTypePlaceholder")}
             label={t("channelType")}
             values={selectValues}
+            isDisabled={isEditing}
             onClick={handleSelectClick}
           />
         </div>
@@ -89,7 +108,7 @@ export default function CreateChannelModal({
             className="w-full"
             color={ColorEnum.PRIMARY}
           >
-            {t("create")}
+            {t("updateChannel")}
           </Button>
         </div>
       </form>

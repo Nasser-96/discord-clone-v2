@@ -11,6 +11,8 @@ export const getUserData = () => {
   if (!token) {
     return null;
   }
+
   const decodedToken = jwtDecode<DecodedTokenType>(token) as DecodedTokenType;
+
   return decodedToken;
 };

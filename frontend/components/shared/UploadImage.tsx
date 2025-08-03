@@ -9,7 +9,7 @@ import ComponentLoader from "./loader";
 import Image from "next/image";
 
 import { IoClose } from "@react-icons/all-files/io5/IoClose";
-import { getTransitionClass } from "@/helpers";
+import { getTransitionClass } from "@/core/helpers";
 import { useTranslations } from "next-intl";
 
 interface UploadImageProps {

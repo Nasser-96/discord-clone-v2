@@ -2,6 +2,7 @@ import { routing } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import Routes from "../routes";
 
 export async function handleAuthRedirect(
   params: { locale: string },
@@ -18,7 +19,7 @@ export async function handleAuthRedirect(
   }
 
   if (!hasLocale(routing.locales, locale)) {
-    redirect(`/en/home`);
+    redirect(Routes("en").home);
   }
 
   const isAuthPages = [`/${locale}/login`, `/${locale}/signup`].includes(
@@ -26,11 +27,11 @@ export async function handleAuthRedirect(
   );
 
   if (!cookieStore && !isAuthPages) {
-    redirect(`/${locale}/login`);
+    redirect(Routes(locale).login);
   }
 
   if (cookieStore && isAuthPages) {
-    redirect(`/${locale}/home`);
+    redirect(Routes(locale).home);
   }
 
   return { dir }; // if needed later

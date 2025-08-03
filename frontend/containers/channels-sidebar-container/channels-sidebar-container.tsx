@@ -1,7 +1,6 @@
 "use client";
 
 import ConfirmModal from "@/components/confirm-modal/confirm-modal";
-import CreateChannelModal from "@/components/create-channel-modal/create-channel-modal";
 import CreateUpdateServerModal from "@/components/create-update-server-modal/create-update-server-modal";
 import InviteUserModal from "@/components/invite-user-modal/invite-user-modal";
 import ManageMembersModal from "@/components/manage-members-modal/manage-members-modal";
@@ -9,9 +8,11 @@ import ServerSidebarDropdown from "@/components/server-sidebar-dropdown/server-s
 import DropDownMenu from "@/components/shared/DropDownMenu";
 import {
   createChannelService,
+  deleteChannelService,
   deleteServerService,
   leaveServerService,
   removeUserFromServerService,
+  updateChannelService,
   updateMemberRoleService,
 } from "@/core/model/services";
 import { serversDataStore } from "@/core/stores/servers-data.store";
@@ -24,6 +25,7 @@ import {
   ChannelType,
   CreateChannelRequestType,
   CreateServerResponseType,
+  DecodedTokenType,
   MemberResponseType,
   ReturnResponseType,
   ServerDataResponseType,
@@ -34,21 +36,27 @@ import { MdInbox } from "@react-icons/all-files/md/MdInbox";
 import { IoIosSearch } from "@react-icons/all-files/io/IoIosSearch";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/shared/Button";
 import SearchChannelModal from "@/components/search-channel-modal/search-channel-modal";
 import ChannelNavigation from "@/components/channel-navigation/channel-navigation";
 import { HiOutlineHashtag } from "@react-icons/all-files/hi/HiOutlineHashtag";
 import { AiOutlineAudio } from "@react-icons/all-files/ai/AiOutlineAudio";
 import { IoVideocamOutline } from "@react-icons/all-files/io5/IoVideocamOutline";
-import { getUserData } from "@/helpers";
+import { getTransitionClass, getUserData } from "@/core/helpers";
+import Routes from "@/core/helpers/routes";
+import useSocketIo from "@/core/hooks/useSocket";
+import CreateUpdateChannelModal from "@/components/create-update-channel-modal/create-update-channel-modal";
+import MemberChannelList from "@/components/member-channel-list/member-channel-list";
 
 interface ChannelsSidebarContainerProps {
   serverData: ServerDataResponseType | undefined;
+  userData: DecodedTokenType;
 }
 
 export default function ChannelsSidebarContainer({
   serverData,
+  userData,
 }: ChannelsSidebarContainerProps) {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
   const [isDeleteServerModalOpen, setIsDeleteServerModalOpen] =
@@ -64,7 +72,9 @@ export default function ChannelsSidebarContainer({
   >(serverData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
-  const { servers, setServers } = serversDataStore();
+  const [isDeleteChannelModalOpen, setIsDeleteChannelModalOpen] =
+    useState<string>("");
+  const { servers, isSideBarOpen, setServers } = serversDataStore();
   const t = useTranslations("common");
   const channelsTrans = useTranslations("searchChannelModal");
   const router = useRouter();
@@ -75,7 +85,13 @@ export default function ChannelsSidebarContainer({
     serverId: string;
     locale: string;
   }>();
-  const userData = getUserData();
+  const [tempChannelData, setTempChannelData] = useState<ChannelType>();
+  const { socket } = useSocketIo({
+    url: "/",
+    query: {},
+    shouldConnect: true,
+  });
+  const iconSize = 20;
 
   const textChannels: ChannelType[] =
     serverDataState?.channels.filter(
@@ -95,8 +111,7 @@ export default function ChannelsSidebarContainer({
   const membersWithoutCurrentUser: MemberResponseType[] =
     serverDataState?.members?.filter((member) => {
       return member.user?.id !== userData?.id;
-    }) || [];
-  console.log(membersWithoutCurrentUser);
+    }) ?? [];
 
   const newInviteCode = (inviteCode: string) => {
     if (!serverDataState) {
@@ -169,7 +184,7 @@ export default function ChannelsSidebarContainer({
       const newServers = servers.filter((server) => server.id !== serverId);
       setServers(newServers);
 
-      router.push(`/${locale ?? "en"}/home`);
+      router.push(Routes(locale).home);
     } catch (error) {
       console.error("Error leaving server:", error);
     }
@@ -183,7 +198,7 @@ export default function ChannelsSidebarContainer({
       const newServers = servers.filter((server) => server.id !== serverId);
       setServers(newServers);
 
-      router.push(`/${locale ?? "en"}/home`);
+      router.push(Routes(locale).home);
     } catch (error) {
       console.error("Error deleting server:", error);
     }
@@ -211,8 +226,59 @@ export default function ChannelsSidebarContainer({
     setIsLoading(false);
   };
 
+  const updateChannel = async (data: CreateChannelRequestType) => {
+    setIsLoading(true);
+    try {
+      if (!tempChannelData) {
+        return;
+      }
+      const updatedChannel: ReturnResponseType<ChannelType> =
+        await updateChannelService(data, tempChannelData.id);
+      setTempChannelData(undefined);
+      const newChannels =
+        serverDataState?.channels.map((channel) => {
+          if (channel.id === updatedChannel.response.id) {
+            return updatedChannel.response;
+          }
+          return channel;
+        }) ?? [];
+
+      setServerDataState({
+        ...(serverDataState as ServerDataResponseType),
+        channels: newChannels,
+      });
+    } catch (error) {
+      console.error("Error updating channel:", error);
+    }
+    setIsLoading(false);
+  };
+
+  const deleteChannel = async () => {
+    try {
+      if (!isDeleteChannelModalOpen || !serverDataState) {
+        return;
+      }
+      await deleteChannelService(isDeleteChannelModalOpen);
+      const newChannels = serverDataState.channels.filter(
+        (channel) => channel.id !== isDeleteChannelModalOpen
+      );
+      setServerDataState({
+        ...(serverDataState as ServerDataResponseType),
+        channels: newChannels,
+      });
+      setIsDeleteChannelModalOpen("");
+    } catch (error) {
+      console.error("Error deleting channel:", error);
+    }
+  };
+
+  //md:static
   return (
-    <div className="bg-[#2B2D31] px-2 py-1 min-w-[200px] h-full max-w-xs">
+    <div
+      className={`bg-[#2B2D31] px-2 py-1 min-w-[260px] z-50 h-full max-w-xs fixed md:static overflow-y-scroll ${
+        isSideBarOpen ? "left-20" : "-left-full"
+      } ${getTransitionClass}`}
+    >
       <DropDownMenu
         listChildren={
           <ServerSidebarDropdown
@@ -249,25 +315,60 @@ export default function ChannelsSidebarContainer({
           {t("search")}
         </div>
       </Button>
-
-      <ChannelNavigation
-        channels={textChannels}
-        icon={<HiOutlineHashtag size={25} className="inline-block" />}
-        title={channelsTrans("text")}
-        buttonColor={ColorEnum.SECONDARY}
-      />
-      <ChannelNavigation
-        channels={audioChannels}
-        icon={<AiOutlineAudio size={25} className="inline-block" />}
-        title={channelsTrans("audio")}
-        buttonColor={ColorEnum.SECONDARY}
-      />
-      <ChannelNavigation
-        channels={videoChannels}
-        icon={<IoVideocamOutline size={25} className="inline-block" />}
-        title={channelsTrans("video")}
-        buttonColor={ColorEnum.SECONDARY}
-      />
+      <div className="h-px w-full bg-discord-text/20 my-3" />
+      {textChannels?.length > 0 && (
+        <ChannelNavigation
+          channels={textChannels}
+          icon={<HiOutlineHashtag size={iconSize} className="inline-block" />}
+          title={channelsTrans("text")}
+          isSideBar
+          role={serverDataState?.memberRole || MemberRoleEnum.USER}
+          openUpdateChannelModal={(channel) => {
+            setTempChannelData(channel);
+          }}
+          setIsDeleteChannelModalOpen={setIsDeleteChannelModalOpen}
+          buttonColor={ColorEnum.SECONDARY}
+        />
+      )}
+      {audioChannels?.length > 0 && (
+        <ChannelNavigation
+          channels={audioChannels}
+          icon={<AiOutlineAudio size={iconSize} className="inline-block" />}
+          title={channelsTrans("audio")}
+          isSideBar
+          role={serverDataState?.memberRole || MemberRoleEnum.USER}
+          setIsDeleteChannelModalOpen={setIsDeleteChannelModalOpen}
+          openUpdateChannelModal={(channel) => {
+            setTempChannelData(channel);
+          }}
+          buttonColor={ColorEnum.SECONDARY}
+        />
+      )}
+      {videoChannels?.length > 0 && (
+        <ChannelNavigation
+          channels={videoChannels}
+          icon={<IoVideocamOutline size={iconSize} className="inline-block" />}
+          title={channelsTrans("video")}
+          isSideBar
+          role={serverDataState?.memberRole || MemberRoleEnum.USER}
+          setIsDeleteChannelModalOpen={setIsDeleteChannelModalOpen}
+          openUpdateChannelModal={(channel) => {
+            setTempChannelData(channel);
+          }}
+          buttonColor={ColorEnum.SECONDARY}
+        />
+      )}
+      {membersWithoutCurrentUser.length > 0 && (
+        <MemberChannelList
+          members={membersWithoutCurrentUser}
+          title={channelsTrans("members")}
+          isSideBar
+          buttonColor={ColorEnum.SECONDARY}
+          openUpdateMembersModal={() => {
+            setIsManageModalOpen(true);
+          }}
+        />
+      )}
       {serverDataState?.channels?.length === 0 && (
         <div className="h-full flex items-center justify-center flex-col text-xl text-white/50">
           <MdInbox size={40} />
@@ -338,12 +439,34 @@ export default function ChannelsSidebarContainer({
         />
       )}
       {isCreateChannelModalOpen && (
-        <CreateChannelModal
+        <CreateUpdateChannelModal
           isLoading={isLoading}
           closeModal={() => {
             setIsCreateChannelModalOpen(false);
           }}
           createChannel={createChannel}
+        />
+      )}
+      {tempChannelData && (
+        <CreateUpdateChannelModal
+          isLoading={isLoading}
+          channelData={tempChannelData}
+          closeModal={() => {
+            setTempChannelData(undefined);
+          }}
+          createChannel={createChannel}
+          updateChannel={updateChannel}
+        />
+      )}
+      {isDeleteChannelModalOpen && (
+        <ConfirmModal
+          title={confirmMessage("deleteChannel")}
+          confirmText={confirmMessage("yes")}
+          cancelText={confirmMessage("cancel")}
+          isLoading={isLoading}
+          confirmButtonColor={ColorEnum.DANGER}
+          onConfirm={deleteChannel}
+          onCancel={() => setIsDeleteChannelModalOpen("")}
         />
       )}
       {isSearchChannelModalOpen && (

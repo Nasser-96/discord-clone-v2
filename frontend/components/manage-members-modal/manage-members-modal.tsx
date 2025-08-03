@@ -19,6 +19,7 @@ import { updateMemberRoleService } from "@/core/model/services";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import ConfirmModal from "../confirm-modal/confirm-modal";
+import UserImage from "../user-image/user-image";
 
 interface ManageMembersModalProps {
   members: MemberResponseType[];
@@ -77,20 +78,7 @@ export default function ManageMembersModal({
                     className="flex gap-2 items-center"
                     key={`server-member-${member.id}`}
                   >
-                    {member?.user?.image ? (
-                      <Image
-                        alt="Channel"
-                        fill
-                        sizes="auto"
-                        priority
-                        src={member?.user?.image}
-                      />
-                    ) : (
-                      <FaRegUserCircle
-                        className="text-discord-muted"
-                        size={30}
-                      />
-                    )}
+                    <UserImage image={member?.user?.image} />
                     <div className="flex justify-between items-center w-full">
                       <div>
                         <div className="flex items-center gap-2">

@@ -2,16 +2,17 @@
 
 import Button from "@/components/shared/Button";
 import InputField from "@/components/shared/InputField";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import AuthUiContainer from "../auth-ui-container/auth-ui-container";
 import { useFormik } from "formik";
 import { LoginFormType, ReturnResponseType } from "@/core/types&enums/types";
 import { loginValidationSchema } from "./login-container.validation";
 import { LoginService } from "@/core/model/services";
-import { setAuthToken } from "@/helpers/auth/token";
+import { setAuthToken } from "@/core/helpers/auth/token";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Routes from "@/core/helpers/routes";
 
 export default function LoginContainer() {
   const t = useTranslations("Login");
@@ -19,6 +20,7 @@ export default function LoginContainer() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { validation } = loginValidationSchema(errorTranslation);
+  const locale = useLocale();
 
   const formik = useFormik<LoginFormType>({
     initialValues: {
@@ -34,7 +36,7 @@ export default function LoginContainer() {
         if (loginData.is_successful) {
           setAuthToken(loginData.response.token);
         }
-        router.push("/");
+        router.push(Routes(locale).home);
       } catch (error) {
         console.log(error);
       }

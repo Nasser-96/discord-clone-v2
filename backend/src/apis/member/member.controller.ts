@@ -6,6 +6,7 @@ import {
   Put,
   UseGuards,
   Req,
+  Get,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { UpdateMemberRoleDto } from './dto/update-member-role.dto';
@@ -15,6 +16,14 @@ import { CanUpdateMemberGuard } from './guards/can-update-member.guard';
 @Controller('member')
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
+
+  @Get('self/:serverId')
+  @UseGuards(AuthGuard)
+  async getSelfMember(@Req() req: any, @Param('serverId') serverId: string) {
+    // Assuming req.user contains the user data
+    const userId = req.user.id; //
+    return this.memberService.getSelfMemberService(userId, serverId);
+  }
 
   @UseGuards(AuthGuard, CanUpdateMemberGuard)
   @Put('update-role/:serverId/:memberId')

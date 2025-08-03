@@ -9,6 +9,44 @@ import ReturnResponse from 'src/helper/returnResponse';
 @Injectable()
 export class MemberService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async getSelfMemberService(userId: string, serverId: string) {
+    const foundMember = await this.prisma.member.findFirst({
+      where: {
+        userId: userId,
+        serverId: serverId,
+      },
+      select: {
+        id: true,
+        serverId: true,
+        role: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            image: true,
+          },
+        },
+      },
+    });
+
+    if (!foundMember) {
+      throw new NotFoundException(
+        ReturnResponse({
+          error_msg: 'Member not found',
+          is_successful: false,
+        }),
+      );
+    }
+
+    const returnResponse = ReturnResponse({
+      response: foundMember,
+      success: 'Member found successfully',
+      is_successful: true,
+    });
+    return returnResponse;
+  }
   async updateMemberRoleService(
     serverId: string,
     memberId: string,

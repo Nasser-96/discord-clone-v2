@@ -3,6 +3,7 @@ import { AxiosMethods, MemberRoleEnum } from "../types&enums/enums";
 import {
   CreateChannelRequestType,
   CreateServerFormType,
+  DynamicValuesType,
   LoginFormType,
   SignUpFormType,
 } from "../types&enums/types";
@@ -144,5 +145,108 @@ export const createChannelService = (
     url: urls.channel.createChannel(serverId),
     method: AxiosMethods.POST,
     data: data,
+  });
+};
+
+export const updateChannelService = (
+  data: CreateChannelRequestType,
+  channelId: string
+) => {
+  return makeRequest({
+    url: urls.channel.updateChannel(channelId),
+    method: AxiosMethods.PATCH,
+    data: data,
+  });
+};
+
+export const deleteChannelService = (channelId: string) => {
+  return makeRequest({
+    url: urls.channel.deleteChannel(channelId),
+    method: AxiosMethods.DELETE,
+  });
+};
+
+export const getChannelDataService = (channelId: string, isServer: boolean) => {
+  return makeRequest({
+    url: urls.channel.getChannelData(channelId),
+    method: AxiosMethods.GET,
+    isServer: isServer,
+  });
+};
+
+export const getSelfMemberService = (serverId: string, isServer: boolean) => {
+  return makeRequest({
+    url: urls.member.getSelfMember(serverId),
+    method: AxiosMethods.GET,
+    isServer: isServer,
+  });
+};
+
+export const getConversationIdService = (targetId: string) => {
+  return makeRequest({
+    url: urls.conversation.getConversationId(targetId),
+    method: AxiosMethods.GET,
+  });
+};
+
+export const getConversationService = (
+  targetId: string,
+  isServer: boolean,
+  params?: DynamicValuesType
+) => {
+  return makeRequest({
+    url: urls.conversation.getConversation(targetId),
+    method: AxiosMethods.GET,
+    isServer,
+    params: params,
+  });
+};
+
+export const createDirectMessageService = (
+  conversationId: string,
+  content: string
+) => {
+  return makeRequest({
+    url: urls["direct-message"].sendMessage(conversationId),
+    method: AxiosMethods.POST,
+    data: {
+      content: content,
+    },
+  });
+};
+
+export const createMessageService = (channelId: string, message: string) => {
+  return makeRequest({
+    url: urls.messages.createMessage(channelId),
+    method: AxiosMethods.POST,
+    data: {
+      content: message,
+    },
+  });
+};
+
+export const channelMessagesService = (
+  channelId: string,
+  params?: DynamicValuesType,
+  isServer: boolean = false
+) => {
+  return makeRequest({
+    url: urls.channel.getChannelMessages(channelId),
+    method: AxiosMethods.GET,
+    params: params,
+    isServer: isServer,
+  });
+};
+
+export const updateDirectMessageService = (
+  messageId: string,
+  content: string
+) => {
+  return makeRequest({
+    url: urls["direct-message"].updateMessage(messageId),
+    method: AxiosMethods.PUT,
+    data: {
+      content: content,
+    },
   });
 };

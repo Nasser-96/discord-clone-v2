@@ -105,6 +105,7 @@ export default function SearchChannelModal({
               channels={getTextChannels()}
               icon={<HiOutlineHashtag size={25} className="inline-block" />}
               title={t("text")}
+              closeModal={() => closeModal()}
             />
           )}
           {getAudioChannels()?.length > 0 && (
@@ -112,6 +113,7 @@ export default function SearchChannelModal({
               channels={getAudioChannels()}
               icon={<AiOutlineAudio size={25} className="inline-block" />}
               title={t("audio")}
+              closeModal={() => closeModal()}
             />
           )}
           {getVideoChannels()?.length > 0 && (
@@ -119,6 +121,7 @@ export default function SearchChannelModal({
               channels={getVideoChannels()}
               icon={<IoVideocamOutline size={25} className="inline-block" />}
               title={t("video")}
+              closeModal={() => closeModal()}
             />
           )}
           {getMembers()?.length > 0 && (

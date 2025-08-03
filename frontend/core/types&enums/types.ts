@@ -64,6 +64,7 @@ export type MemberResponseType = {
   role: MemberRoleEnum;
   id: string;
   user: UserType;
+  serverId?: string;
 };
 
 export type UserType = {
@@ -85,6 +86,7 @@ export type ChannelType = {
   createdAt: Date;
   id: string;
   name: string;
+  serverId?: string;
 };
 
 export type SelectFormatType = {
@@ -95,4 +97,52 @@ export type SelectFormatType = {
 export type CreateChannelRequestType = {
   name: string;
   channelType: ChannelTypeEnum;
+};
+
+export type DynamicValuesType = {
+  [key: string]: number | string | boolean | string[] | number[] | unknown;
+};
+
+export type ConversationIdResponseType = {
+  id: string;
+  userOneId: string;
+  userTwoId: string;
+};
+
+export type ConversationResponseType = {
+  userOne: UserType;
+  userTwo: UserType;
+  messages: MessageType[];
+  count: number;
+};
+
+export type MessageType = {
+  id: string;
+  userId: string;
+  createdAt: Date;
+  content: string;
+};
+
+export type MessageSocketType = {
+  content: string;
+  id: string;
+};
+
+export type DirectMessageSocketType = {
+  message: MessageSocketType;
+  senderId: string;
+};
+
+export type ChannelMessageType = {
+  id: string;
+  content: string;
+  createdAt: Date;
+  member: {
+    user: UserType;
+  };
+};
+
+export type ChannelMessagesResponseType = {
+  messages: ChannelMessageType[];
+  count: number;
 };

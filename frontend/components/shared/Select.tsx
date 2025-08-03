@@ -1,16 +1,18 @@
 "use client";
 import { useOutsideClick } from "@/core/hooks/useOutsideClick";
 import { SelectFormatType } from "@/core/types&enums/types";
-import { getTransitionClass } from "@/helpers";
+import { getTransitionClass } from "@/core/helpers";
 import { useRef, useState } from "react";
 import DropDownMenuButtonItem from "./DropDownMenuButtonItem";
 import { IoChevronDownOutline } from "@react-icons/all-files/io5/IoChevronDownOutline";
+import Button from "./Button";
 
 interface SelectProps {
   label: string;
   values: SelectFormatType[];
   value: string;
   placeholder?: string;
+  isDisabled?: boolean;
   onClick: (value: string, label?: string) => void;
 }
 
@@ -19,6 +21,7 @@ export default function Select({
   value,
   placeholder,
   label,
+  isDisabled = false,
   onClick,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -36,11 +39,12 @@ export default function Select({
   return (
     <div className="flex flex-col gap-1 relative">
       <label className="block text-sm text-discord-muted ">{label}</label>
-      <button
+      <Button
         type="button"
         className="w-full flex justify-between items-center px-4 py-2 rounded-md bg-[#1e1f22] text-white border border-[#2b2d31]"
         onClick={() => setIsOpen(!isOpen)}
         ref={dropDownRef}
+        disabled={isDisabled}
       >
         {value ? (
           <p>{value}</p>
@@ -48,7 +52,7 @@ export default function Select({
           <p className="text-gray-400">{placeholder}</p>
         )}
         <IoChevronDownOutline className="text-gray-400" size={20} />
-      </button>
+      </Button>
       <div
         className={`absolute top-full z-50 bg-black min-h-12 w-full overflow-hidden rounded-md shadow drop-shadow ${getTransitionClass} w-[calc(100%-20px)]
         ${isOpen ? "scale-100" : "scale-0"}

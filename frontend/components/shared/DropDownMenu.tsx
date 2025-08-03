@@ -1,6 +1,6 @@
 "use client";
 import { useOutsideClick } from "@/core/hooks/useOutsideClick";
-import { getTransitionClass } from "@/helpers";
+import { getTransitionClass } from "@/core/helpers";
 import { useRef, useState } from "react";
 
 interface DropDownMenuProps {

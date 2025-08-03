@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
     });
 
     if (!token) {
+      console.log('Invalid token 1', token);
       throw new UnauthorizedException(errorResponse);
     }
     try {
@@ -29,6 +30,7 @@ export class AuthGuard implements CanActivate {
       });
       request['user'] = payload;
     } catch {
+      console.log('Invalid token 2');
       throw new UnauthorizedException(errorResponse);
     }
     return true;

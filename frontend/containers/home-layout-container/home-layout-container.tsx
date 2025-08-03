@@ -10,13 +10,15 @@ import {
   CreateServerResponseType,
   ServersResponseType,
 } from "@/core/types&enums/types";
-import { getTransitionClass } from "@/helpers";
-import { removeAuthToken } from "@/helpers/auth/token";
+import { getTransitionClass } from "@/core/helpers";
+import { removeAuthToken } from "@/core/helpers/auth/token";
+import Routes from "@/core/helpers/routes";
 import { IoAddOutline } from "@react-icons/all-files/io5/IoAddOutline";
 import { IoLogOutOutline } from "@react-icons/all-files/io5/IoLogOutOutline";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useOutsideClick } from "@/core/hooks/useOutsideClick";
 
 interface HomeLayoutContainerProps {
   serverData: ServersResponseType[]; // Adjust type as necessary
@@ -26,17 +28,19 @@ export default function HomeLayoutContainer({
   children,
   serverData,
 }: HomeLayoutContainerProps) {
-  const { servers, setServers } = serversDataStore();
+  const { servers, isSideBarOpen, setServers, toggleSideBar } =
+    serversDataStore();
   const [isServersLoading, setIsServersLoading] = useState<boolean>(true);
   const [isCreateServerModalOpen, setIsCreateServerModalOpen] =
     useState<boolean>(false);
   const t = useTranslations("home");
   const router = useRouter();
   const local = useLocale();
+  const ref = useRef<HTMLElement>(null);
 
   const handleLogout = () => {
     removeAuthToken();
-    router.push(`/${local}/login`);
+    router.push(Routes(local).login);
   };
 
   useEffect(() => {
@@ -51,10 +55,26 @@ export default function HomeLayoutContainer({
       memberCount: 1,
     });
   };
+  useOutsideClick({
+    isOpen: isSideBarOpen,
+    callback: () => {
+      toggleSideBar();
+    },
+    ref: ref,
+  });
+  //md:static
 
   return (
     <div className="flex h-full">
-      <nav className="h-full bg-[#212224] p-3 flex flex-col overflow-visible z-10 justify-between items-center">
+      {isSideBarOpen && (
+        <div className="w-full fixed md:hidden bg-black/30 h-full z-10"></div>
+      )}
+      <nav
+        className={`h-full bg-[#212224] p-3 flex flex-col overflow-visible z-10 justify-between items-center fixed w-20 md:static
+            ${getTransitionClass}
+            ${isSideBarOpen ? "left-0" : "-left-full"}`}
+        ref={ref}
+      >
         <div className="flex gap-3 flex-col items-center">
           <WithTooltip position={PositionEnum.RIGHT} text={t("createServer")}>
             <Button

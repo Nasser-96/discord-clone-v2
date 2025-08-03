@@ -10,9 +10,9 @@ import { useFormik } from "formik";
 import { ValidationSchema } from "./signup-container.validation";
 import { ReturnResponseType, SignUpFormType } from "@/core/types&enums/types";
 import { SignupService } from "@/core/model/services";
-import { setAuthToken } from "@/helpers/auth/token";
-import { redirect } from "next/navigation";
+import { setAuthToken } from "@/core/helpers/auth/token";
 import { ColorEnum } from "@/core/types&enums/enums";
+import Routes from "@/core/helpers/routes";
 
 export default function SignupContainer() {
   const t = useTranslations("signup");
@@ -37,7 +37,7 @@ export default function SignupContainer() {
         if (signupData.is_successful) {
           setAuthToken(signupData.response.token);
         }
-        router.push(`/${local}/home`);
+        router.push(Routes(local).home);
       } catch (error) {
         console.log(error);
       }

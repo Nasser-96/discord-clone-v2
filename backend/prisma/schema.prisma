@@ -17,7 +17,9 @@ model User {
   createdAt DateTime @default(now())
 
   memberships Member[]
-  messages    Message[]
+  directMessages DirectMessage[]
+  conversationsInitiated Conversation[] @relation("UserOne")
+  conversationsReceived  Conversation[] @relation("UserTwo")
 }
 
 model Server {
@@ -37,8 +39,10 @@ model Member {
   serverId String
   role     MemberRole @default(USER)
 
-  user   User   @relation(fields: [userId], references: [id])
-  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+  server    Server    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  messages  Message[]
 }
 
 model Channel {
@@ -53,15 +57,53 @@ model Channel {
 }
 
 model Message {
-  id        String   @id @default(uuid())
-  content   String
-  userId    String
-  channelId String
-  createdAt DateTime @default(now())
+  id          String    @id @default(uuid())
+  content     String
+  memberId    String
+  channelId   String
+  createdAt   DateTime  @default(now())
 
-  user    User    @relation(fields: [userId], references: [id])
-  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  member  Member      @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  channel Channel     @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  deleted Boolean     @default(false) // Soft delete
+
+  @@index([channelId])
+  @@index([memberId])
 }
+
+// ====================== Direct Messages =====================
+model Conversation {
+  id          String    @id @default(uuid())
+  userOneId   String
+  userTwoId   String
+
+  userOne     User @relation("UserOne", fields: [userOneId], references: [id], onDelete: Cascade)
+  userTwo     User @relation("UserTwo", fields: [userTwoId], references: [id], onDelete: Cascade)
+
+  messages DirectMessage[]
+
+  @@index([userOneId])
+  @@index([userTwoId])
+  @@unique([userOneId, userTwoId])
+}
+
+model DirectMessage {
+  id              String    @id @default(uuid())
+  content         String
+  createdAt       DateTime  @default(now())
+  deleted         Boolean   @default(false)
+
+  userId          String
+  conversationId  String
+
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([conversationId])
+}
+
+// =============================================================
 
 // ====================== Enums =====================
 enum MemberRole {

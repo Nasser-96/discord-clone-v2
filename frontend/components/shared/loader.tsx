@@ -4,7 +4,7 @@ export interface ComponentLoaderProps {
 
 export function ComponentLoader({ size }: ComponentLoaderProps) {
   return (
-    <div className={`flex items-center justify-center text-discord-bg`}>
+    <div className={`flex items-center justify-center text-discord-muted`}>
       <svg
         className="ml-1 mr-1 animate-spin text-current"
         xmlns="http://www.w3.org/2000/svg"

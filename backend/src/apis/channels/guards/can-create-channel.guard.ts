@@ -29,8 +29,6 @@ export class CanCreateChannel implements CanActivate {
       },
     });
 
-    console.log('foundUpdater', user?.id);
-
     if (!foundUpdater) {
       throw new UnauthorizedException(
         ReturnResponse({

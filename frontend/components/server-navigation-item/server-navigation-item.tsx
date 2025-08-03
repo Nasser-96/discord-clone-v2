@@ -4,8 +4,9 @@ import { WithTooltip } from "../shared/WithTooltip";
 import { PositionEnum } from "@/core/types&enums/enums";
 import { useLocale } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
-import { getTransitionClass } from "@/helpers";
+import { getTransitionClass } from "@/core/helpers";
 import Image from "next/image";
+import Routes from "@/core/helpers/routes";
 
 interface ServerNavigationProps {
   serverData: ServersResponseType;
@@ -18,7 +19,7 @@ export default function ServerNavigationItem({
   const router = useRouter();
   const params = useParams();
   const navigateToServer = () => {
-    router?.push(`/${local}/home/${serverData.id}`);
+    router?.push(Routes(local).server(serverData.id));
   };
 
   return (

@@ -10,10 +10,12 @@ export type MakeRequest = {
   headers?: any;
 };
 
+export const backendUrl = "http://localhost:9000";
+
 export const makeRequest = async (req: MakeRequest) => {
   const { url, method, data, params, headers, isServer = false } = req;
   return axiosInstance(isServer)({
-    url: "http://localhost:9000" + url,
+    url: backendUrl + url,
     method,
     data,
     headers,

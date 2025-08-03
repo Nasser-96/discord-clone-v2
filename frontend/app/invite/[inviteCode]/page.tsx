@@ -1,4 +1,5 @@
 import { addUserToServerService } from "@/core/model/services";
+import Routes from "@/core/helpers/routes";
 import { redirect } from "next/navigation";
 
 export default async function InvitePage({
@@ -20,10 +21,10 @@ export default async function InvitePage({
   // NOTE: redirect will NOT work inside try-catch block in server components
   // so we handle it outside the try-catch block
   if (id) {
-    const redirectUrl = `/${locale}/home/${id}`;
+    const redirectUrl = Routes(locale).server(id);
     redirect(redirectUrl);
   } else {
-    const fallbackUrl = `/${locale}/home`;
+    const fallbackUrl = Routes(locale).home;
     redirect(fallbackUrl);
   }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { ModalSizeEnum } from "@/core/types&enums/enums";
-import { getTransitionClass } from "@/helpers";
+import { getTransitionClass } from "@/core/helpers";
 import { JSX, useEffect, useRef, useState } from "react";
 
 interface ModalProps {

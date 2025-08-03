@@ -1,10 +1,10 @@
 import { routing } from "@/i18n/routing";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { cookies, headers } from "next/headers";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import "../globals.css";
-import { handleAuthRedirect } from "@/helpers/auth/redirect";
+import { handleAuthRedirect } from "@/core/helpers/auth/redirect";
 
 export default async function LocaleLayout({
   children,
@@ -22,7 +22,7 @@ export default async function LocaleLayout({
         <div dir={dir} className="">
           <NextIntlClientProvider>
             <main
-              className={`h-screen w-full text-white bg-discord-bg transition-all duration-300 ease-in-out`}
+              className={`h-screen max-h-screen w-full text-white bg-discord-bg transition-all duration-300 ease-in-out`}
             >
               {children}
             </main>

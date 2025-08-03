@@ -21,6 +21,7 @@ export enum ColorEnum {
   DANGER = "DANGER",
   WARNING = "WARNING",
   DARK = "DARK",
+  TRANSPARENT = "TRANSPARENT",
 }
 
 export enum ModalSizeEnum {
@@ -40,4 +41,19 @@ export enum ChannelTypeEnum {
   TEXT = "TEXT",
   AUDIO = "AUDIO",
   VIDEO = "VIDEO",
+}
+
+export enum ChatTypeEnum {
+  CONVERSATION = "CONVERSATION",
+  CHANNEL = "CHANNEL",
+}
+
+export enum DirectMessageEventEnum {
+  DIRECT_MESSAGE = "DIRECT_MESSAGE",
+  JOIN_CONVERSATION = "JOIN_CONVERSATION",
+}
+
+export enum ChannelMessageEventEnum {
+  CHANNEL_MESSAGE = "CHANNEL_MESSAGE",
+  JOIN_CHANNEL = "JOIN_CHANNEL",
 }

@@ -11,11 +11,17 @@ export class SocketIOAdapter extends IoAdapter {
     super(app);
   }
 
-  createIOServer(port: number, options?: ServerOptions): any {
+  createIOServer(port: number, options?: ServerOptions): Server {
     this.server = super.createIOServer(port, options);
 
     const jwtService = this.app.get(JwtService);
-    this.server.of('/').use(createTokenMiddleware(jwtService, this.logger));
+
+    this.server
+      .of('/direct-message')
+      .use(createTokenMiddleware(jwtService, this.logger));
+    this.server
+      .of('/channel')
+      .use(createTokenMiddleware(jwtService, this.logger));
     return this.server;
   }
 }
@@ -29,6 +35,7 @@ const createTokenMiddleware =
       const payload = jwtService.verify(token, {
         secret: process.env.JSON_TOKEN_KEY,
       });
+
       socket.user_id = payload.id;
       socket.username = payload.username;
 

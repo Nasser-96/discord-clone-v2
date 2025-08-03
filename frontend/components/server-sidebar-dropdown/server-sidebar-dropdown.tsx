@@ -30,7 +30,7 @@ export default function ServerSidebarDropdown({
 }: ServerSidebarDropdownProps) {
   const t = useTranslations("ServerSidebarDropdown");
   return (
-    <div className="text-nowrap">
+    <div className="text-nowrap z-50">
       {(isModerator || isAdmin) && (
         <DropDownMenuButtonItem
           className="text-indigo-500 dark:text-indigo-400 justify-between"

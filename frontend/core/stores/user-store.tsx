@@ -1,4 +1,4 @@
-import { getAuthToken } from "@/helpers/auth/token";
+import { getAuthToken } from "@/core/helpers/auth/token";
 import { create } from "zustand";
 
 export type UserStoreType = {

@@ -1,5 +1,6 @@
 "use client";
 
+import Routes from "@/core/helpers/routes";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -9,7 +10,7 @@ export default function Page() {
   const router = useRouter();
   const locale = useLocale();
   useEffect(() => {
-    router.push(`/${locale}/home`);
+    router.push(Routes(locale).home);
   }, []);
   return <></>;
 }

@@ -1,5 +1,5 @@
-import { getAuthToken } from "@/helpers/auth/token";
-import { getServerToken } from "@/helpers/auth/token-from-server";
+import { getAuthToken } from "@/core/helpers/auth/token";
+import { getServerToken } from "@/core/helpers/auth/token-from-server";
 import axios, { InternalAxiosRequestConfig } from "axios";
 
 const axiosInstance = (isServer: boolean) => {

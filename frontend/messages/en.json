@@ -80,14 +80,15 @@
     "kick": "Kick"
   },
   "confirmMessage": {
-    "deleteMemberTitle": "Are you sure you want to kick this member?",
-    "deleteServer": "Are you sure you want to delete this server?",
-    "leaveServerTitle": "Are you sure you want to leave this server?",
+    "deleteMemberTitle": "Are you sure you want to kick this member ?",
+    "deleteServer": "Are you sure you want to delete this server ?",
+    "leaveServerTitle": "Are you sure you want to leave this server ?",
+    "deleteChannel": "Are you sure you want to delete this channel ?",
     "yes": "Yes",
     "delete": "Delete",
     "cancel": "Cancel"
   },
-  "createChannelModal": {
+  "createUpdateChannelModal": {
     "title": "Create Channel",
     "name": "Channel Name",
     "namePlaceholder": "Enter channel name",
@@ -98,7 +99,8 @@
     "nameLabel": "Channel Name",
     "TEXT": "Text",
     "AUDIO": "Audio",
-    "VIDEO": "Video"
+    "VIDEO": "Video",
+    "updateChannel": "Update"
   },
   "searchChannelModal": {
     "text": "Text Channels",
@@ -106,5 +108,16 @@
     "video": "Video Channels",
     "members": "Members",
     "searchPlaceholder": "Search channels"
+  },
+  "conversationContainer": {
+    "emptyState": "No conversations yet. Start a conversation by sending a message.",
+    "typeHere": "Type your message here...",
+    "deleteMessage": "Delete Message",
+    "confirmMessage": "Are you sure you want to delete this message?",
+    "cancel": "Cancel"
+  },
+  "channelContainer": {
+    "emptyState": "No conversations yet. Start a conversation by sending a message.",
+    "typeHere": "Type your message here..."
   }
 }
