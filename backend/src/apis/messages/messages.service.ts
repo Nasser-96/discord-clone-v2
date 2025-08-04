@@ -12,7 +12,7 @@ export class MessagesService {
     private readonly prismaService: PrismaService,
     private readonly channelSocket: ChannelMessageGateway,
   ) {}
-  async create(
+  async createService(
     createMessageDto: CreateMessageDto,
     channelId: string,
     userId: string,
@@ -112,6 +112,73 @@ export class MessagesService {
         count: totalMessages,
       },
       success: 'Messages retrieved successfully',
+      is_successful: true,
+    });
+  }
+
+  async updateService(messageId: string, updateMessageDto: UpdateMessageDto) {
+    const { content } = updateMessageDto;
+
+    const updatedMessage = await this.prismaService.message.update({
+      where: { id: messageId },
+      data: { content: content },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+        channelId: true,
+        member: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                image: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    this.channelSocket.server
+      ?.to(updatedMessage?.channelId)
+      .emit(ChannelMessageEventEnum.CHANNEL_MESSAGE_UPDATE, {
+        id: updatedMessage?.id,
+        content: updatedMessage?.content,
+        createdAt: updatedMessage?.createdAt,
+        member: {
+          user: updatedMessage?.member?.user,
+        },
+      });
+
+    return ReturnResponse({
+      response: updatedMessage,
+      success: 'Message updated successfully',
+      is_successful: true,
+    });
+  }
+
+  async deleteService(messageId: string) {
+    const deletedMessage = await this.prismaService.message.update({
+      where: { id: messageId },
+      data: { deleted: true },
+      select: {
+        id: true,
+        channelId: true,
+      },
+    });
+
+    this.channelSocket.server
+      ?.to(deletedMessage?.channelId)
+      .emit(ChannelMessageEventEnum.CHANNEL_MESSAGE_DELETE, {
+        id: deletedMessage?.id,
+      });
+
+    return ReturnResponse({
+      response: deletedMessage,
+      success: 'Message deleted successfully',
       is_successful: true,
     });
   }

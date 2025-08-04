@@ -44,9 +44,12 @@ export const urls = {
     getMessages: (conversationId: string) =>
       `/direct-message/messages/${conversationId}`,
     updateMessage: (messageId: string) => `/direct-message/update/${messageId}`,
+    deleteMessage: (messageId: string) => `/direct-message/delete/${messageId}`,
   },
   messages: {
     createMessage: (channelId: string) =>
       `/messages/channel/${channelId}/create`,
+    updateMessage: (messageId: string) => `/messages/update/${messageId}`,
+    deleteMessage: (messageId: string) => `/messages/delete/${messageId}`,
   },
 };

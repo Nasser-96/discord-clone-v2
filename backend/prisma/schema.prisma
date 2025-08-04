@@ -91,7 +91,7 @@ model DirectMessage {
   id              String    @id @default(uuid())
   content         String
   createdAt       DateTime  @default(now())
-  deleted         Boolean   @default(false)
+  deleted         Boolean   @default(false) // Soft delete
 
   userId          String
   conversationId  String

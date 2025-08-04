@@ -12,6 +12,7 @@ import ReturnResponse from 'src/helper/returnResponse';
 @Injectable()
 export class CanCreateUser implements CanActivate {
   constructor(private prisma: PrismaService) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requestBody: CreateAuthDto = context
       .switchToHttp()

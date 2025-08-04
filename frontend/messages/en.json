@@ -60,7 +60,11 @@
   },
   "common": {
     "noDataYet": "No data yet",
-    "search": "Search"
+    "search": "Search",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save"
   },
   "inviteUserModal": {
     "title": "Invite User",
@@ -114,10 +118,14 @@
     "typeHere": "Type your message here...",
     "deleteMessage": "Delete Message",
     "confirmMessage": "Are you sure you want to delete this message?",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "startConversation": "This is the start of your conversation with {username}."
   },
   "channelContainer": {
     "emptyState": "No conversations yet. Start a conversation by sending a message.",
-    "typeHere": "Type your message here..."
+    "typeHere": "Type your message here...",
+    "confirmMessage": "Are you sure you want to delete this message?",
+    "welcomeTo": "Welcome to",
+    "startConversation": "This is the start of the #{channelName} channel."
   }
 }

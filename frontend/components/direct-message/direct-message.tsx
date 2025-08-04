@@ -7,11 +7,14 @@ import { FaRegEdit } from "@react-icons/all-files/fa/FaRegEdit";
 import { FiTrash } from "@react-icons/all-files/fi/FiTrash";
 import InputField from "../shared/InputField";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface DirectMessageProps {
   message: MessageType;
   currentUser: UserType;
   editedMessageId: string;
+  isUpdateMessageLoading: boolean;
+  cancelEditMessage: () => void;
   openEditMessageInput: (messageId: string) => void;
   updateMessage: (messageId: string) => void;
   openDeleteMessageModal: (messageId: string) => void;
@@ -21,11 +24,14 @@ export default function DirectMessage({
   message,
   currentUser,
   editedMessageId,
+  isUpdateMessageLoading,
+  cancelEditMessage,
   updateMessage,
   openDeleteMessageModal,
   openEditMessageInput,
 }: DirectMessageProps) {
   const [editedMessage, setEditedMessage] = useState<string>("");
+  const t = useTranslations("common");
 
   return (
     <div
@@ -77,9 +83,20 @@ export default function DirectMessage({
             />
             <Button
               color={ColorEnum.PRIMARY}
+              isLoading={isUpdateMessageLoading}
               onClick={() => updateMessage(editedMessage)}
             >
-              Save
+              {t("save")}
+            </Button>
+            <Button
+              color={ColorEnum.DANGER}
+              isLoading={isUpdateMessageLoading}
+              onClick={() => {
+                cancelEditMessage();
+                setEditedMessage("");
+              }}
+            >
+              {t("cancel")}
             </Button>
           </div>
         ) : (

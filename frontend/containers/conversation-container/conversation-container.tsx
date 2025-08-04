@@ -7,7 +7,9 @@ import LoadMoreScroll from "@/components/shared/LoadMoreScroll";
 import useSocketIo from "@/core/hooks/useSocket";
 import {
   createDirectMessageService,
+  deleteDirectMessageService,
   getConversationService,
+  updateDirectMessageService,
 } from "@/core/model/services";
 import {
   ChatTypeEnum,
@@ -21,6 +23,7 @@ import {
   ReturnResponseType,
   UserType,
 } from "@/core/types&enums/types";
+import { HiOutlineHashtag } from "@react-icons/all-files/hi/HiOutlineHashtag";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
@@ -39,6 +42,10 @@ export default function ConversationContainer({
   count,
 }: ConversationContainerProps) {
   const t = useTranslations("conversationContainer");
+  const [isUpdateMessageLoading, setIsUpdateMessageLoading] =
+    useState<boolean>(false);
+  const [isDeleteMessageLoading, setIsDeleteMessageLoading] =
+    useState<boolean>(false);
   const [messagesState, setMessagesState] = useState<MessageType[]>(messages);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [editedMessageId, setEditedMessageId] = useState<string>("");
@@ -95,12 +102,64 @@ export default function ConversationContainer({
     setMessage(""); // Clear the input field after sending
 
     try {
-      await createDirectMessageService(conversationId, message);
+      const ResponseMessage: ReturnResponseType<MessageType> =
+        await createDirectMessageService(conversationId, message);
+      console.log("ResponseMessage:", ResponseMessage);
+      setMessagesState((prev) =>
+        prev.map((msg) =>
+          msg.id === newMessage.id
+            ? { ...msg, id: ResponseMessage.response.id }
+            : msg
+        )
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
+  const openEditMessageInput = (messageId: string) => {
+    setEditedMessageId(messageId);
+  };
+
+  const updateMessage = async (newMessage: string) => {
+    setIsUpdateMessageLoading(true);
+    try {
+      const updatedMessage: ReturnResponseType<MessageType> =
+        await updateDirectMessageService(editedMessageId, newMessage);
+      setMessagesState((prev) =>
+        prev.map((msg) =>
+          msg.id === editedMessageId
+            ? { ...msg, content: updatedMessage?.response?.content }
+            : msg
+        )
+      );
+      setEditedMessageId("");
+    } catch (error) {
+      console.log("Error updating message:", error);
+    }
+    setIsUpdateMessageLoading(false);
+  };
+
+  const deleteMessage = async (messageId: string) => {
+    //77e0a87d-6bde-4e1a-9262-f2c9ffd84d0e
+    setIsDeleteMessageLoading(true);
+    try {
+      const deleteMessageResponse: ReturnResponseType<null> =
+        await deleteDirectMessageService(messageId);
+      if (deleteMessageResponse?.is_successful) {
+        setMessagesState((prev) => prev.filter((msg) => msg.id !== messageId));
+      }
+    } catch (error) {
+      console.log("Error deleting message:", error);
+    }
+    setIsDeleteMessageLoading(false);
+  };
+
+  const openDeleteMessageModal = (messageId: string) => {
+    setDeleteMessageId(messageId);
+  };
+
+  // ============== Socket Event Handlers ============== START
   const handleNewMessage = (data: DirectMessageSocketType) => {
     if (data?.senderId === currentUser.id) {
       return; // Ignore messages sent by the current user
@@ -115,26 +174,30 @@ export default function ConversationContainer({
     setMessagesState((prev) => [newMessage, ...prev]);
   };
 
-  const openEditMessageInput = (messageId: string) => {
-    setEditedMessageId(messageId);
-  };
+  const handleMessageUpdate = (data: DirectMessageSocketType) => {
+    if (data?.senderId === currentUser.id) {
+      return; // Ignore updates sent by the current user
+    }
 
-  const updateMessage = (newMessage: string) => {
-    // const
+    const updatedMessage: MessageType = {
+      id: data.message.id,
+      content: data.message.content,
+      userId: data.senderId,
+      createdAt: new Date(),
+    };
     setMessagesState((prev) =>
-      prev.map((msg) =>
-        msg.id === editedMessageId ? { ...msg, content: newMessage } : msg
-      )
+      prev.map((msg) => (msg.id === updatedMessage.id ? updatedMessage : msg))
     );
-    setEditedMessageId("");
   };
 
-  const deleteMessage = (messageId: string) => {
-    setMessagesState((prev) => prev.filter((msg) => msg.id !== messageId));
-  };
+  const handleMessageDelete = (data: DirectMessageSocketType) => {
+    if (data?.senderId === currentUser.id) {
+      return; // Ignore deletes sent by the current user
+    }
 
-  const openDeleteMessageModal = (messageId: string) => {
-    setDeleteMessageId(messageId);
+    setMessagesState((prev) =>
+      prev.filter((msg) => msg.id !== data.message.id)
+    );
   };
 
   useEffect(() => {
@@ -144,9 +207,25 @@ export default function ConversationContainer({
         handleNewMessage(data);
       }
     );
+    socket?.on(
+      DirectMessageEventEnum.DIRECT_MESSAGE_UPDATE,
+      (data: DirectMessageSocketType) => {
+        console.log("Received message update:", data);
+
+        handleMessageUpdate(data);
+      }
+    );
+
+    socket?.on(
+      DirectMessageEventEnum.DELETE_DIRECT_MESSAGE,
+      (data: DirectMessageSocketType) => {
+        handleMessageDelete(data);
+      }
+    );
 
     return () => {
       socket?.off(DirectMessageEventEnum.DIRECT_MESSAGE);
+      socket?.off(DirectMessageEventEnum.DIRECT_MESSAGE_UPDATE);
     };
   }, [socket]);
 
@@ -167,6 +246,8 @@ export default function ConversationContainer({
       socket?.off("disconnect");
     };
   }, [conversationId, socket?.connected]);
+
+  // ============== Socket Event Handlers ============== END
 
   useEffect(() => {
     if (isMounted) {
@@ -192,7 +273,9 @@ export default function ConversationContainer({
                 <DirectMessage
                   currentUser={currentUser}
                   message={message}
+                  isUpdateMessageLoading={isUpdateMessageLoading}
                   editedMessageId={editedMessageId}
+                  cancelEditMessage={() => setEditedMessageId("")}
                   openEditMessageInput={openEditMessageInput}
                   updateMessage={updateMessage}
                   openDeleteMessageModal={openDeleteMessageModal}
@@ -206,6 +289,16 @@ export default function ConversationContainer({
               loaderColor={ColorEnum.PRIMARY}
               loadMore={loadMore}
             />
+            <div className="flex flex-col gap-3 px-3 mb-4">
+              <div className="rounded-full w-fit text-5xl">
+                {otherUser?.username}
+              </div>
+              <div className="text-discord-muted">
+                {t("startConversation", {
+                  username: otherUser?.username,
+                })}
+              </div>
+            </div>
           </div>
         ) : (
           <div className="h-full w-full flex items-center justify-center text-2xl">
@@ -220,7 +313,7 @@ export default function ConversationContainer({
           title={t("confirmMessage")}
           onCancel={() => setDeleteMessageId("")}
           confirmButtonColor={ColorEnum.DANGER}
-          isLoading={isLoading}
+          isLoading={isDeleteMessageLoading}
           onConfirm={() => {
             deleteMessage(deleteMessageId);
             setDeleteMessageId("");

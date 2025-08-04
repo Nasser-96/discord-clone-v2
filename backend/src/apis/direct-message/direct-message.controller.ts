@@ -15,6 +15,7 @@ import { CreateDirectMessageDto } from './dto/create-direct-message.dto';
 import { UpdateDirectMessageDto } from './dto/update-direct-message.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CanGetConversation } from '../conversation/guards/can-get-conversation.guard';
+import { IsOwnerDirectMessage } from './guards/can-update-direct-message.guard';
 
 @Controller('direct-message')
 export class DirectMessageController {
@@ -28,7 +29,7 @@ export class DirectMessageController {
     @Req() req: any,
   ) {
     const userId = req.user.id; // Assuming the authenticated user's ID is in req.user.id
-    return this.directMessageService.create(
+    return this.directMessageService.createService(
       createDirectMessageDto,
       conversationId,
       userId,
@@ -36,14 +37,17 @@ export class DirectMessageController {
   }
 
   @Put('update/:messageId')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, IsOwnerDirectMessage)
   update(
-    @Param('id') id: string,
+    @Param('messageId') id: string,
     @Body() updateDirectMessageDto: UpdateDirectMessageDto,
-    @Req() req: any,
   ) {
-    const userId = req.user.id; // Assuming the authenticated user's ID is in req.user.id
-    return '';
-    // return this.directMessageService.update(id, updateDirectMessageDto, userId);
+    return this.directMessageService.updateService(id, updateDirectMessageDto);
+  }
+
+  @Delete('delete/:messageId')
+  @UseGuards(AuthGuard, IsOwnerDirectMessage)
+  delete(@Param('messageId') id: string) {
+    return this.directMessageService.deleteService(id);
   }
 }

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@livekit/components-react": "^2.9.14",
+    "@livekit/components-styles": "^1.1.6",
     "@react-icons/all-files": "^4.1.0",
     "axios": "^1.10.0",
     "formik": "^2.4.6",
@@ -16,6 +18,8 @@
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-resources-to-backend": "^1.2.1",
     "jwt-decode": "^4.0.0",
+    "livekit-client": "^2.15.4",
+    "livekit-server-sdk": "^2.13.1",
     "next": "15.3.5",
     "next-intl": "^4.3.4",
     "nookies": "^2.5.2",

@@ -59,7 +59,7 @@ export class ChannelsService {
     const [foundMessages, totalMessages] =
       await this.prismaService.$transaction([
         this.prismaService.message.findMany({
-          where: { channelId: channelId },
+          where: { channelId: channelId, deleted: false },
           select: {
             id: true,
             content: true,
@@ -82,7 +82,7 @@ export class ChannelsService {
           take: limit,
         }),
         this.prismaService.message.count({
-          where: { channelId: channelId },
+          where: { channelId: channelId, deleted: false },
         }),
       ]);
 

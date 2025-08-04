@@ -9,7 +9,7 @@ import ReturnResponse from 'src/helper/returnResponse';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class CanUpdateDirectMessage implements CanActivate {
+export class IsOwnerDirectMessage implements CanActivate {
   constructor(private prismaService: PrismaService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();

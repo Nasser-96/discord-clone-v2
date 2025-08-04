@@ -4,6 +4,7 @@ import InputField from "../shared/InputField";
 import ChatHeader from "../chat-header/chat-header";
 import { UserType } from "@/core/types&enums/types";
 import { ChatTypeEnum } from "@/core/types&enums/enums";
+import { HiOutlineHashtag } from "@react-icons/all-files/hi/HiOutlineHashtag";
 
 interface SharedConversationLayoutProps {
   children: React.ReactNode;

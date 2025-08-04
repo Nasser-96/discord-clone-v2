@@ -79,6 +79,9 @@ export class ConversationService {
             },
           },
           messages: {
+            where: {
+              deleted: false, // Ensure we only fetch non-deleted messages
+            },
             select: {
               id: true,
               content: true,
@@ -96,6 +99,7 @@ export class ConversationService {
       this.prismaService.directMessage.count({
         where: {
           conversationId: conversationId,
+          deleted: false,
         },
       }),
     ]);

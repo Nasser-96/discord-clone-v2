@@ -250,3 +250,30 @@ export const updateDirectMessageService = (
     },
   });
 };
+
+export const deleteDirectMessageService = (messageId: string) => {
+  return makeRequest({
+    url: urls["direct-message"].deleteMessage(messageId),
+    method: AxiosMethods.DELETE,
+  });
+};
+
+export const updateMessageChannelService = (
+  messageId: string,
+  content: string
+) => {
+  return makeRequest({
+    url: urls.messages.updateMessage(messageId),
+    method: AxiosMethods.PUT,
+    data: {
+      content: content,
+    },
+  });
+};
+
+export const deleteMessageChannelService = (messageId: string) => {
+  return makeRequest({
+    url: urls.messages.deleteMessage(messageId),
+    method: AxiosMethods.DELETE,
+  });
+};
