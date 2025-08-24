@@ -7,12 +7,16 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComponentLoader from "../../components/shared/loader";
 import {
+  ControlBar,
   LiveKitRoom,
+  RoomAudioRenderer,
+  RoomContext,
   VideoConference,
   useRoomContext,
 } from "@livekit/components-react";
 import "@livekit/components-styles";
 import LiveKit from "@/components/livekit/livekit";
+import { Room } from "livekit-client";
 
 interface LiveKitProps {
   chatType: ChatTypeEnum;
@@ -31,11 +35,26 @@ export default function LiveKitContainer({
     channelId: string;
   }>();
 
+  const [roomInstance] = useState(
+    () =>
+      new Room({
+        // Optimize video quality for each participant's screen
+        adaptiveStream: true,
+        // Enable automatic audio/video quality optimization
+        dynacast: true,
+      })
+  );
+
   const getToken = async () => {
     try {
       const data: ReturnResponseType<{ token: string }> =
         await getServerChannelLiveKitTokenService(serverId, channelId);
-      setToken(data?.response?.token || "");
+      const token = data?.response?.token || "";
+      setToken(token || "");
+      await roomInstance.connect(
+        process.env.NEXT_PUBLIC_LIVEKIT_URL || "",
+        token
+      );
     } catch (error) {
       console.error(error);
     }
@@ -43,26 +62,32 @@ export default function LiveKitContainer({
 
   useEffect(() => {
     getToken();
-    return () => {};
-  }, []);
+    return () => {
+      roomInstance.disconnect();
+    };
+  }, [roomInstance, channelId]);
 
-  if (!token) {
+  if (token === "") {
     return (
-      <div className="h-full w-full flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center">
         <ComponentLoader />
       </div>
     );
   }
 
   return (
-    <LiveKitRoom
-      data-lk-theme="default"
-      serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
-      token={token}
-      video={video}
-      audio={audio}
-    >
-      <LiveKit />
-    </LiveKitRoom>
+    <RoomContext.Provider value={roomInstance}>
+      <div
+        data-lk-theme="default"
+        className="h-[calc(100%-var(--lk-control-bar-height))] w-full"
+      >
+        {/* Your custom component with basic video conferencing functionality. */}
+        <LiveKit />
+        {/* The RoomAudioRenderer takes care of room-wide audio for you. */}
+        <RoomAudioRenderer />
+        {/* Controls for the user to start/stop audio, video, and screen share tracks */}
+        <ControlBar />
+      </div>
+    </RoomContext.Provider>
   );
 }

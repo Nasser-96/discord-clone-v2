@@ -3,7 +3,7 @@ import Button from "../shared/Button";
 import InputField from "../shared/InputField";
 import ChatHeader from "../chat-header/chat-header";
 import { ChannelTypeEnum, ChatTypeEnum } from "@/core/types&enums/enums";
-import LiveKit from "../../containers/livekit-container/livekit-container";
+import LiveKitContainer from "../../containers/livekit-container/livekit-container";
 
 interface SharedConversationLayoutProps {
   children: React.ReactNode;
@@ -33,7 +33,7 @@ export default function SharedConversationLayout({
       <div className="h-full flex">
         {channelType === ChannelTypeEnum.VIDEO && (
           <div className="w-3/4">
-            <LiveKit chatType={chatType} video={false} audio={false} />
+            <LiveKitContainer chatType={chatType} video={false} audio={false} />
           </div>
         )}
         <div

@@ -1,33 +1,37 @@
 "use client";
-import { useRoomContext, VideoConference } from "@livekit/components-react";
-import { useEffect, useState } from "react";
+
+import {
+  GridLayout,
+  ParticipantTile,
+  useTracks,
+} from "@livekit/components-react";
+import { Track } from "livekit-client";
+import { useEffect } from "react";
 
 export default function LiveKit() {
-  const room = useRoomContext();
-  console.log(room);
-
-  const [isConnected, setIsConnected] = useState<boolean>(true);
+  const tracks = useTracks(
+    [
+      { source: Track.Source.Camera, withPlaceholder: true },
+      { source: Track.Source.ScreenShare, withPlaceholder: false },
+    ],
+    { onlySubscribed: false }
+  );
 
   useEffect(() => {
-    if (!room) return;
-
-    const handleDisconnect = () => setIsConnected(false);
-    room.on("disconnected", handleDisconnect);
-
     return () => {
-      room.off("disconnected", handleDisconnect);
-
-      // Stop tracks before leaving
-      room.localParticipant
-        .getTrackPublications()
-        .forEach((t) => t.track?.stop());
-
-      // Leave room
-      room.disconnect();
+      tracks.forEach((track) => {
+        if (track) {
+          track.participant?.setDisconnected();
+        }
+      });
     };
-  }, [room]);
+  }, [tracks]);
 
-  if (!isConnected) return null;
-
-  return <VideoConference />;
+  return (
+    <GridLayout tracks={tracks}>
+      {/* The GridLayout accepts zero or one child. The child is used
+      as a template to render all passed in tracks. */}
+      <ParticipantTile />
+    </GridLayout>
+  );
 }

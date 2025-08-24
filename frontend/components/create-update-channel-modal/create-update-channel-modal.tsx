@@ -108,7 +108,7 @@ export default function CreateUpdateChannelModal({
             className="w-full"
             color={ColorEnum.PRIMARY}
           >
-            {t("updateChannel")}
+            {t(isEditing ? "updateChannel" : "create")}
           </Button>
         </div>
       </form>
