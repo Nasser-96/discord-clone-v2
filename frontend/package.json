@@ -18,7 +18,7 @@
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-resources-to-backend": "^1.2.1",
     "jwt-decode": "^4.0.0",
-    "livekit-client": "^2.15.4",
+    "livekit-client": "^2.15.5",
     "livekit-server-sdk": "^2.13.1",
     "next": "15.3.5",
     "next-intl": "^4.3.4",

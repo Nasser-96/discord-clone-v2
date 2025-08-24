@@ -2,3 +2,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.lk-disconnect-button {
+  display: none !important;
+}
+
+.lk-start-audio-button {
+  display: none !important;
+}
+
+.lk-chat-toggle {
+  display: none !important;
+}

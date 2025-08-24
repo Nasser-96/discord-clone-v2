@@ -259,6 +259,7 @@ export default function ChannelContainer({
         chatType={ChatTypeEnum.CHANNEL}
         inputPlaceholder={t("typeHere")}
         message={message}
+        channelType={channel?.channelType}
         headerTitle={channel?.name}
         sendMessage={sendMessage}
         setMessage={setMessage}

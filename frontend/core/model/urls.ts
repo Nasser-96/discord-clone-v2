@@ -52,4 +52,8 @@ export const urls = {
     updateMessage: (messageId: string) => `/messages/update/${messageId}`,
     deleteMessage: (messageId: string) => `/messages/delete/${messageId}`,
   },
+  livekit: {
+    getToken: (serverId: string, channelId: string) =>
+      `/live-kit/serverToken/${serverId}/${channelId}`,
+  },
 };

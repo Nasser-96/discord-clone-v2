@@ -277,3 +277,13 @@ export const deleteMessageChannelService = (messageId: string) => {
     method: AxiosMethods.DELETE,
   });
 };
+
+export const getServerChannelLiveKitTokenService = (
+  serverId: string,
+  channelId: string
+) => {
+  return makeRequest({
+    url: urls.livekit.getToken(serverId, channelId),
+    method: AxiosMethods.GET,
+  });
+};

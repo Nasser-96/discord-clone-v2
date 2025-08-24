@@ -10,12 +10,15 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
+    "types": ["node"],
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   }

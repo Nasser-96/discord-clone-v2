@@ -11,6 +11,7 @@ import { SocketModule } from './socket/socket.module';
 import { ConversationModule } from './apis/conversation/conversation.module';
 import { DirectMessageModule } from './apis/direct-message/direct-message.module';
 import { MessagesModule } from './apis/messages/messages.module';
+import { LiveKitModule } from './apis/live-kit/live-kit.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MessagesModule } from './apis/messages/messages.module';
     ConversationModule,
     DirectMessageModule,
     MessagesModule,
+    LiveKitModule,
   ],
   controllers: [AppController],
   providers: [AppService],
