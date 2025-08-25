@@ -18,6 +18,8 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { CanGetChannelDataChannel } from '../channels/guards/can-get-channel-data.guard';
 import { CanUpdateChannelMessageGuard } from './guards/can-update-message.guard';
 import { CanDeleteChannelMessageGuard } from './guards/can-delete-message.guard';
+import { UserDataType } from '../auth/types';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('messages')
 export class MessagesController {
@@ -28,9 +30,9 @@ export class MessagesController {
   create(
     @Body() createMessageDto: CreateMessageDto,
     @Param('channelId') channelId: string,
-    @Req() req: any,
+    @GetUser() user: UserDataType,
   ) {
-    const userId = req.user.id; // Assuming the authenticated user's ID is in req.user.id
+    const userId = user.id;
     return this.messagesService.createService(
       createMessageDto,
       channelId,
@@ -43,7 +45,6 @@ export class MessagesController {
   update(
     @Param('messageId') messageId: string,
     @Body() updateMessageDto: UpdateMessageDto,
-    @Req() req: any,
   ) {
     return this.messagesService.updateService(messageId, updateMessageDto);
   }

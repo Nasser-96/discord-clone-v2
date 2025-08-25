@@ -15,6 +15,8 @@ import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CanGetConversation } from './guards/can-get-conversation.guard';
+import { UserDataType } from '../auth/types';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('conversations')
 export class ConversationController {
@@ -24,9 +26,9 @@ export class ConversationController {
   @UseGuards(AuthGuard)
   getDirectConversation(
     @Param('targetUserId') targetUserId: string,
-    @Req() req: any,
+    @GetUser() user: UserDataType,
   ) {
-    const currentUserId = req.user.id; // Assuming the authenticated user's ID is in req.user.id
+    const currentUserId = user.id;
     return this.conversationService.getOrCreateDirectConversationService(
       targetUserId,
       currentUserId,

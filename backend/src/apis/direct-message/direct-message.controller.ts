@@ -16,6 +16,8 @@ import { UpdateDirectMessageDto } from './dto/update-direct-message.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CanGetConversation } from '../conversation/guards/can-get-conversation.guard';
 import { IsOwnerDirectMessage } from './guards/can-update-direct-message.guard';
+import { UserDataType } from '../auth/types';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('direct-message')
 export class DirectMessageController {
@@ -26,9 +28,9 @@ export class DirectMessageController {
   send(
     @Body() createDirectMessageDto: CreateDirectMessageDto,
     @Param('conversationId') conversationId: string,
-    @Req() req: any,
+    @GetUser() user: UserDataType,
   ) {
-    const userId = req.user.id; // Assuming the authenticated user's ID is in req.user.id
+    const userId = user.id;
     return this.directMessageService.createService(
       createDirectMessageDto,
       conversationId,

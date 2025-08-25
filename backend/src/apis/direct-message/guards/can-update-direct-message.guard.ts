@@ -13,7 +13,7 @@ export class IsOwnerDirectMessage implements CanActivate {
   constructor(private prismaService: PrismaService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id; // Assuming the authenticated user's ID is in req.user.id
+    const userId = request.user.id;
     const directMessageId = request.params.messageId;
 
     const foundRelatedMessage =

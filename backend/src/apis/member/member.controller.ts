@@ -12,6 +12,8 @@ import { MemberService } from './member.service';
 import { UpdateMemberRoleDto } from './dto/update-member-role.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CanUpdateMemberGuard } from './guards/can-update-member.guard';
+import { UserDataType } from '../auth/types';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('member')
 export class MemberController {
@@ -19,9 +21,11 @@ export class MemberController {
 
   @Get('self/:serverId')
   @UseGuards(AuthGuard)
-  async getSelfMember(@Req() req: any, @Param('serverId') serverId: string) {
-    // Assuming req.user contains the user data
-    const userId = req.user.id; //
+  async getSelfMember(
+    @GetUser() user: UserDataType,
+    @Param('serverId') serverId: string,
+  ) {
+    const userId = user.id; //
     return this.memberService.getSelfMemberService(userId, serverId);
   }
 
@@ -43,10 +47,9 @@ export class MemberController {
   @UseGuards(AuthGuard)
   async leaveServer(
     @Param('serverId') serverId: string,
-    @Req() req: any, // Assuming req contains user data
+    @GetUser() user: UserDataType,
   ) {
-    // Assuming req.user contains the user data
-    const userId = req.user.id; //
+    const userId = user.id; //
     return this.memberService.deleteMemberService(serverId, { userId: userId });
   }
 

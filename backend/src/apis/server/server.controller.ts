@@ -17,6 +17,7 @@ import { IsJoinedServerGuard } from './guards/is-joined-server.guard';
 import { CanUpdateServer } from './guards/can-update-server.guard';
 import { CanAddUserToServer } from './guards/can-add-user-to-server.guard';
 import { UpdateMemberRoleDto } from '../member/dto/update-member-role.dto';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('server')
 export class ServerController {
@@ -24,24 +25,26 @@ export class ServerController {
 
   @Post('create')
   @UseGuards(AuthGuard)
-  create(@Body() createServerDto: CreateServerDto, @Req() req) {
-    const userData: UserDataType = req.user;
-
-    return this.serverService.createServerService(userData, createServerDto);
+  create(
+    @Body() createServerDto: CreateServerDto,
+    @GetUser() user: UserDataType,
+  ) {
+    return this.serverService.createServerService(user, createServerDto);
   }
 
   @Get('my-servers')
   @UseGuards(AuthGuard)
-  getMyServers(@Req() req) {
-    const userData: UserDataType = req.user;
-    return this.serverService.getMyServersService(userData);
+  getMyServers(@GetUser() user: UserDataType) {
+    return this.serverService.getMyServersService(user);
   }
 
   @Get(':serverId')
   @UseGuards(AuthGuard, IsJoinedServerGuard)
-  getServerData(@Req() req, @Param('serverId') serverId: string) {
-    const userData: UserDataType = req.user;
-    return this.serverService.getServerDataService(userData, serverId);
+  getServerData(
+    @GetUser() user: UserDataType,
+    @Param('serverId') serverId: string,
+  ) {
+    return this.serverService.getServerDataService(user, serverId);
   }
 
   @Put(':serverId/update-invite-code')
@@ -52,9 +55,11 @@ export class ServerController {
 
   @Post(':inviteCode/add-user')
   @UseGuards(AuthGuard, CanAddUserToServer)
-  addUserToServer(@Param('inviteCode') serverId: string, @Req() req) {
-    const userData: UserDataType = req.user;
-    return this.serverService.addUserToServerService(serverId, userData);
+  addUserToServer(
+    @Param('inviteCode') serverId: string,
+    @GetUser() user: UserDataType,
+  ) {
+    return this.serverService.addUserToServerService(serverId, user);
   }
 
   @Put(':serverId/update')
