@@ -9,12 +9,12 @@ const liveKitUrl = process.env.LIVEKIT_URL;
 
 @Injectable()
 export class LiveKitService {
-  async create(channelId: string, user: UserDataType) {
+  async create(id: string, user: UserDataType) {
     const at = new AccessToken(apiKey, apiSecret, {
       identity: user.username,
     });
     at.addGrant({
-      room: channelId,
+      room: id,
       roomJoin: true,
       canPublish: true,
       canSubscribe: true,

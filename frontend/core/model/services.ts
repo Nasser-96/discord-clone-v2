@@ -287,3 +287,10 @@ export const getServerChannelLiveKitTokenService = (
     method: AxiosMethods.GET,
   });
 };
+
+export const getConversationLiveKitTokenService = (conversationId: string) => {
+  return makeRequest({
+    url: urls.livekit.getConversationToken(conversationId),
+    method: AxiosMethods.GET,
+  });
+};

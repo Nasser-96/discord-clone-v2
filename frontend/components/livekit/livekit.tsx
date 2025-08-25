@@ -1,37 +1,36 @@
 "use client";
 
 import {
-  GridLayout,
-  ParticipantTile,
-  useTracks,
+  AudioConference,
+  useRoomContext,
+  VideoConference,
 } from "@livekit/components-react";
-import { Track } from "livekit-client";
 import { useEffect } from "react";
 
-export default function LiveKit() {
-  const tracks = useTracks(
-    [
-      { source: Track.Source.Camera, withPlaceholder: true },
-      { source: Track.Source.ScreenShare, withPlaceholder: false },
-    ],
-    { onlySubscribed: false }
-  );
+interface LiveKitProps {
+  isAudio: boolean;
+  setShowLiveKit?: (value: boolean) => void;
+}
+
+export default function LiveKit({ isAudio, setShowLiveKit }: LiveKitProps) {
+  const room = useRoomContext();
 
   useEffect(() => {
-    return () => {
-      tracks.forEach((track) => {
-        if (track) {
-          track.participant?.setDisconnected();
-        }
-      });
-    };
-  }, [tracks]);
+    room.on("participantConnected", (participant) => {
+      console.log("Participant connected:", participant.identity);
 
-  return (
-    <GridLayout tracks={tracks}>
-      {/* The GridLayout accepts zero or one child. The child is used
-      as a template to render all passed in tracks. */}
-      <ParticipantTile />
-    </GridLayout>
+      if (setShowLiveKit) setShowLiveKit(true);
+    });
+    return () => {
+      room.off("participantConnected", () => {});
+    };
+  }),
+    [];
+  return isAudio ? (
+    <div className="h-[calc(100%-var(--lk-control-bar-height))] w-full">
+      <AudioConference />
+    </div>
+  ) : (
+    <VideoConference />
   );
 }

@@ -272,10 +272,9 @@ export default function ChannelsSidebarContainer({
     }
   };
 
-  //md:static
   return (
     <div
-      className={`bg-[#2B2D31] px-2 py-1 min-w-[260px] z-50 h-full max-w-xs fixed md:static overflow-y-scroll ${
+      className={`bg-[#2B2D31] px-2 py-1 min-w-[260px] z-50 h-full max-w-xs fixed xl:static overflow-y-scroll ${
         isSideBarOpen ? "left-20" : "-left-full"
       } ${getTransitionClass}`}
     >

@@ -59,7 +59,7 @@ export default function MemberChannelList({
         await getConversationIdService(targetId);
       const conversationId = response.response?.id;
 
-      router.push(Routes(locale).directConversation(conversationId));
+      router.push(Routes(locale).directConversation(conversationId, serverId));
     } catch (err) {
       console.error("Error fetching conversation ID:", err);
     }

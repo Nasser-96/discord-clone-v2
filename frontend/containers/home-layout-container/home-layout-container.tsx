@@ -62,15 +62,14 @@ export default function HomeLayoutContainer({
     },
     ref: ref,
   });
-  //md:static
 
   return (
     <div className="flex h-full">
       {isSideBarOpen && (
-        <div className="w-full fixed md:hidden bg-black/30 h-full z-10"></div>
+        <div className="w-full fixed xl:hidden bg-black/30 h-full z-10"></div>
       )}
       <nav
-        className={`h-full bg-[#212224] p-3 flex flex-col overflow-visible z-10 justify-between items-center fixed w-20 md:static
+        className={`h-full bg-[#212224] p-3 flex flex-col overflow-visible z-10 justify-between items-center fixed w-20 xl:static
             ${getTransitionClass}
             ${isSideBarOpen ? "left-0" : "-left-full"}`}
         ref={ref}

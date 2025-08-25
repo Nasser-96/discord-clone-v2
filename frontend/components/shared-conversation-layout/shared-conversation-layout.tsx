@@ -12,8 +12,10 @@ interface SharedConversationLayoutProps {
   chatType: ChatTypeEnum;
   inputPlaceholder: string;
   message: string;
+  shouldShowLiveKit?: boolean;
   setMessage: (value: string) => void;
   sendMessage: (message: string) => void;
+  toggleLiveKit: () => void;
 }
 
 export default function SharedConversationLayout({
@@ -23,18 +25,37 @@ export default function SharedConversationLayout({
   inputPlaceholder,
   message,
   channelType,
+  shouldShowLiveKit = true,
+  toggleLiveKit,
   setMessage,
   sendMessage,
 }: SharedConversationLayoutProps) {
-  const shouldGetFullWidth = channelType !== ChannelTypeEnum.VIDEO;
+  const shouldGetFullWidth =
+    (channelType !== ChannelTypeEnum.VIDEO &&
+      channelType !== ChannelTypeEnum.AUDIO) ||
+    !shouldShowLiveKit;
+
+  const shouldShowVideo =
+    channelType === ChannelTypeEnum.VIDEO && shouldShowLiveKit;
+
+  const shouldShowAudio =
+    channelType === ChannelTypeEnum.AUDIO && shouldShowLiveKit;
   return (
     <div className="h-full w-full flex flex-col">
-      <ChatHeader name={headerTitle} type={chatType} />
+      <ChatHeader
+        toggleLiveKit={toggleLiveKit}
+        name={headerTitle}
+        type={chatType}
+        isVideoOn={shouldShowLiveKit}
+      />
       <div className="h-full flex">
-        {channelType === ChannelTypeEnum.VIDEO && (
-          <div className="w-3/4">
-            <LiveKitContainer chatType={chatType} video={false} audio={false} />
-          </div>
+        {(shouldShowVideo || shouldShowAudio) && (
+          <LiveKitContainer
+            isAudio={channelType === ChannelTypeEnum.AUDIO}
+            chatType={chatType}
+            video={false}
+            audio={false}
+          />
         )}
         <div
           className={`flex flex-col h-full overflow-y-scroll ${

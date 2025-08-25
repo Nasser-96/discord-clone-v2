@@ -12,6 +12,7 @@ import {
   updateDirectMessageService,
 } from "@/core/model/services";
 import {
+  ChannelTypeEnum,
   ChatTypeEnum,
   ColorEnum,
   DirectMessageEventEnum,
@@ -23,7 +24,6 @@ import {
   ReturnResponseType,
   UserType,
 } from "@/core/types&enums/types";
-import { HiOutlineHashtag } from "@react-icons/all-files/hi/HiOutlineHashtag";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
@@ -42,6 +42,7 @@ export default function ConversationContainer({
   count,
 }: ConversationContainerProps) {
   const t = useTranslations("conversationContainer");
+  const [showLiveKit, setShowLiveKit] = useState<boolean>(false);
   const [isUpdateMessageLoading, setIsUpdateMessageLoading] =
     useState<boolean>(false);
   const [isDeleteMessageLoading, setIsDeleteMessageLoading] =
@@ -141,7 +142,6 @@ export default function ConversationContainer({
   };
 
   const deleteMessage = async (messageId: string) => {
-    //77e0a87d-6bde-4e1a-9262-f2c9ffd84d0e
     setIsDeleteMessageLoading(true);
     try {
       const deleteMessageResponse: ReturnResponseType<null> =
@@ -157,6 +157,14 @@ export default function ConversationContainer({
 
   const openDeleteMessageModal = (messageId: string) => {
     setDeleteMessageId(messageId);
+  };
+
+  const toggleLiveKit = () => {
+    setShowLiveKit((prev) => !prev);
+  };
+
+  const getChatClassName = () => {
+    const className = "";
   };
 
   // ============== Socket Event Handlers ============== START
@@ -259,10 +267,13 @@ export default function ConversationContainer({
   return (
     <>
       <SharedConversationLayout
-        chatType={ChatTypeEnum.CONVERSATION}
         inputPlaceholder={t("typeHere")}
         message={message}
         headerTitle={otherUser?.username}
+        shouldShowLiveKit={showLiveKit}
+        chatType={ChatTypeEnum.CONVERSATION}
+        channelType={ChannelTypeEnum.VIDEO}
+        toggleLiveKit={toggleLiveKit}
         sendMessage={sendMessage}
         setMessage={setMessage}
       >

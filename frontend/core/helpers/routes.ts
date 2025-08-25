@@ -6,8 +6,8 @@ export default function Routes(locale: string) {
     `${getHomeRoute()}/server/${serverId}`;
   const getChannelRoute = (serverId: string, channelId: string) =>
     `${getServerRoute(serverId)}/channel/${channelId}`;
-  const getConversationRoute = (conversationId: string) =>
-    `${getHomeRoute()}/conversations/${conversationId}`;
+  const getConversationRoute = (conversationId: string, serverId: string) =>
+    `${getServerRoute(serverId)}/conversations/${conversationId}`;
 
   return {
     home: getHomeRoute(),

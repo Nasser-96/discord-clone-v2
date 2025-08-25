@@ -55,5 +55,7 @@ export const urls = {
   livekit: {
     getToken: (serverId: string, channelId: string) =>
       `/live-kit/serverToken/${serverId}/${channelId}`,
+    getConversationToken: (conversationId: string) =>
+      `/live-kit/conversationToken/${conversationId}`,
   },
 };
